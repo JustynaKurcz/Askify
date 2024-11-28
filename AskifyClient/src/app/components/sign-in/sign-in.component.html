@@ -1,0 +1,55 @@
+<div class="sign-in-container">
+  <div class="sign-in-side">
+    <p-card>
+      <h2>Logowanie ✋</h2>
+      <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid">
+          <div class="field">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              pInputText
+              formControlName="email"
+              [ngClass]="{'ng-invalid ng-dirty': signInForm.get('email')?.invalid && signInForm.get('email')?.touched}"
+            >
+            <small class="p-error" *ngIf="signInForm.get('email')?.invalid && signInForm.get('email')?.touched">
+              Wprowadź poprawny adres email
+            </small>
+          </div>
+
+          <div class="field">
+            <label for="password">Hasło</label>
+            <p-password
+              id="password"
+              formControlName="password"
+              [feedback]="false"
+              [toggleMask]="true"
+            ></p-password>
+            <small class="p-error" *ngIf="signInForm.get('password')?.invalid && signInForm.get('password')?.touched">
+              Hasło musi mieć minimum 6 znaków
+            </small>
+          </div>
+
+          <div>
+            <span
+              class="p-float-label"
+              (click)="onForgotPassword()"
+            >Zapomniałeś hasła? Przypomnij</span>
+          </div>
+
+          <div class="field">
+            <p-button
+              label="Zaloguj"
+              type="submit"
+              [disabled]="signInForm.invalid"
+            ></p-button>
+          </div>
+        </div>
+      </form>
+    </p-card>
+  </div>
+  <div class="image-side">
+    <img src="/assets/askify-logo.webp" alt="Login illustration" class="sign-in-image">
+  </div>
+</div>

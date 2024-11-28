@@ -1,0 +1,3 @@
+:host ::ng-deep .p-toast {
+  width: 20rem !important;
+}
