@@ -1,0 +1,62 @@
+<div class="auth-container">
+  <div class="auth-side">
+    <p-card>
+      <h2>Rejestracja ✋</h2>
+      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid">
+          <div class="field">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              pInputText
+              formControlName="email"
+              [ngClass]="{'ng-invalid ng-dirty': signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched}"
+            >
+            <small class="p-error" *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
+              Wprowadź poprawny adres email
+            </small>
+          </div>
+
+          <div class="field">
+            <label for="userName">Nazwa użytkownika</label>
+            <input
+              id="userName"
+              type="text"
+              pInputText
+              formControlName="userName"
+              [ngClass]="{'ng-invalid ng-dirty': signUpForm.get('userName')?.invalid && signUpForm.get('userName')?.touched}"
+            >
+            <small class="p-error" *ngIf="signUpForm.get('userName')?.invalid && signUpForm.get('userName')?.touched">
+              Nazwa użytkownika jest wymagana
+            </small>
+          </div>
+
+          <div class="field">
+            <label for="password">Hasło</label>
+            <p-password
+              id="password"
+              formControlName="password"
+              [feedback]="false"
+              [toggleMask]="true"
+            ></p-password>
+            <small class="p-error" *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">
+              Hasło musi mieć minimum 6 znaków
+            </small>
+          </div>
+
+          <div class="field">
+            <p-button
+              label="Zarejestruj"
+              type="submit"
+              [disabled]="signUpForm.invalid"
+            ></p-button>
+          </div>
+        </div>
+      </form>
+    </p-card>
+  </div>
+  <div class="image-side">
+    <img src="/assets/askify-logo.webp" alt="Login illustration" class="auth-image">
+  </div>
+</div>

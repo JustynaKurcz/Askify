@@ -20,8 +20,12 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets"
+            ],
             "styles": [
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/themes/lara-light-purple/theme.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.css"
             ],
@@ -74,8 +78,12 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              "src/assets"
+            ],
             "styles": [
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/themes/lara-light-purple/theme.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.css"
             ],
