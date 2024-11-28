@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Askify.Infrastructure\Askify.Infrastructure.csproj" />
+      <ProjectReference Include="..\Askify.Shared\Askify.Shared.csproj" />
     </ItemGroup>
 
 </Project>

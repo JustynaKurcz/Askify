@@ -1,3 +1,5 @@
+using Askify.Core.Questions.Enums;
+
 namespace Askify.Core.Questions.Entities;
 
 public class QuestionBuilder
@@ -15,6 +17,12 @@ public class QuestionBuilder
     public QuestionBuilder WithContent(string content)
     {
         _question.Content = content;
+        return this;
+    }
+    
+    public QuestionBuilder WithTag(Tag tag)
+    {
+        _question.Tag = tag;
         return this;
     }
 
