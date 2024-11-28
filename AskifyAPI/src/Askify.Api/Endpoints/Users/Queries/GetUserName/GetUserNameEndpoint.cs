@@ -24,6 +24,7 @@ internal sealed class GetUserNameEndpoint : IEndpointDefinition
                 Description = "This endpoint allows get user name by user id.",
             })
             .WithTags(UserEndpoints.Users)
-            .Produces<string>(StatusCodes.Status200OK);
+            .Produces<string>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound);
     }
 }
