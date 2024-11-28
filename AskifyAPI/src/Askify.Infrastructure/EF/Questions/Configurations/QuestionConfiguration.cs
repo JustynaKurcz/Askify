@@ -1,4 +1,5 @@
 using Askify.Core.Questions.Entities;
+using Askify.Core.Questions.Enums;
 
 namespace Askify.Infrastructure.EF.Questions.Configurations;
 
@@ -13,6 +14,9 @@ internal sealed class QuestionConfiguration : IEntityTypeConfiguration<Question>
             .HasMaxLength(250);
 
         builder.Property<string>("Content")
+            .IsRequired();
+        
+        builder.Property<Tag>("Tag")
             .IsRequired();
 
         builder.Property<DateTimeOffset>("CreatedAt")
