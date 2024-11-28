@@ -15,7 +15,7 @@ internal sealed class GetQuestionEndpoint : IEndpointDefinition
             {
                 var query = new GetQuestionQuery(questionId);
                 var result = await mediator.Send(query);
-                
+
                 return Results.Ok(result);
             })
             .WithOpenApi(operation => new OpenApiOperation(operation)

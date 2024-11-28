@@ -16,10 +16,10 @@ internal sealed class AnswersConfiguration : IEntityTypeConfiguration<Answer>
 
         builder.Property<Guid>("UserId")
             .IsRequired();
-        
+
         builder.Property<Guid>("QuestionId")
             .IsRequired();
-        
+
         builder.HasOne(a => a.Question)
             .WithMany(q => q.Answers)
             .HasForeignKey(a => a.QuestionId);

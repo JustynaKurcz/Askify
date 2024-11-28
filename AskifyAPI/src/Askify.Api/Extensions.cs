@@ -19,7 +19,7 @@ internal static class Extensions
 
         return services;
     }
-    
+
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var endpointDefinitions = Assembly.GetExecutingAssembly()

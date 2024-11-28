@@ -1,7 +1,6 @@
 using Askify.Api;
 using Askify.Shared;
 using Askify.Shared.Auth;
-using Askify.Shared.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +21,6 @@ builder.Services.AddCors(options =>
             policy.AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
-
         });
 });
 

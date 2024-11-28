@@ -23,5 +23,4 @@ public class AnswerBuilder
         _answer.QuestionId = questionId;
         return this;
     }
-    
 }

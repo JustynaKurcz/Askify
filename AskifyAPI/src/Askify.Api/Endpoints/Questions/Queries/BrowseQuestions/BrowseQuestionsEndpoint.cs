@@ -1,7 +1,6 @@
 using Askify.Application.Questions.Queries.BrowseQuestions;
 using Askify.Application.Questions.Queries.BrowseQuestions.DTO;
 using Askify.Shared.Endpoints;
-using Askify.Shared.Pagination;
 using MediatR;
 
 namespace Askify.Api.Endpoints.Questions.Queries.BrowseQuestions;

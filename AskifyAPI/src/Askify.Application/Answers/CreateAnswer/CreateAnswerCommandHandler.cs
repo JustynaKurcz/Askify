@@ -20,7 +20,7 @@ internal sealed class CreateAnswerCommandHandler(
 
         var questionExists = await questionRepository
             .AnyAsync(x => x.Id == command.QuestionId, cancellationToken);
-        
+
         if (!questionExists)
             throw new QuestionException.QuestionNotFoundException(command.QuestionId);
 

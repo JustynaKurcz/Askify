@@ -1,6 +1,6 @@
 namespace Askify.Shared.Auth.Context;
 
-internal  class Context : IContext
+internal class Context : IContext
 {
     public IIdentityContext Identity { get; }
 

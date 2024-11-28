@@ -1,4 +1,3 @@
-
 namespace Askify.Shared.Auth;
 
 public interface IAuthManager

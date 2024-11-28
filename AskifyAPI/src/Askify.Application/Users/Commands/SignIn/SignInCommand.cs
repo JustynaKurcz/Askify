@@ -1,4 +1,3 @@
-using Askify.Shared.Results;
 using MediatR;
 
 namespace Askify.Application.Users.Commands.SignIn;

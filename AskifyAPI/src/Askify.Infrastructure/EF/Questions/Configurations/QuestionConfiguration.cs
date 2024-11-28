@@ -15,7 +15,7 @@ internal sealed class QuestionConfiguration : IEntityTypeConfiguration<Question>
 
         builder.Property<string>("Content")
             .IsRequired();
-        
+
         builder.Property<Tag>("Tag")
             .IsRequired();
 
