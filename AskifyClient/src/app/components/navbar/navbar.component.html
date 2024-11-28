@@ -1,0 +1,34 @@
+<div class="navbar">
+  <div class="navbar-content">
+    <div class="left-section">
+      <img ngSrc="assets/askify-logo.webp" alt="Askify Logo" class="navbar-logo" height="1024" width="1024">
+      <span class="logo-text">Askify</span>
+    </div>
+
+    <div class="nav-items">
+      <p-button
+        label="Home"
+        icon="pi pi-home"
+        styleClass="p-button-text">
+      </p-button>
+
+      <p-button
+        label="Questions"
+        icon="pi pi-question-circle"
+        styleClass="p-button-text">
+      </p-button>
+
+    </div>
+
+    <div class="right-section">
+      <i class="pi pi-user"
+         (click)="menu.toggle($event)"
+         style="cursor: pointer">
+      </i>
+      <p-menu #menu
+              [popup]="true"
+              [model]="menuItems">
+      </p-menu>
+    </div>
+  </div>
+</div>
