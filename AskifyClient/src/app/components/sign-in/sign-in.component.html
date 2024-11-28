@@ -1,5 +1,5 @@
-<div class="sign-in-container">
-  <div class="sign-in-side">
+<div class="auth-container">
+  <div class="auth-side">
     <p-card>
       <h2>Logowanie ✋</h2>
       <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
@@ -32,10 +32,9 @@
           </div>
 
           <div>
-            <span
-              class="p-float-label"
-              (click)="onForgotPassword()"
-            >Zapomniałeś hasła? Przypomnij</span>
+            <a class="forgot-password" (click)="onForgotPassword()">
+              Zapomniałeś hasła?
+            </a>
           </div>
 
           <div class="field">
@@ -50,6 +49,6 @@
     </p-card>
   </div>
   <div class="image-side">
-    <img src="/assets/askify-logo.webp" alt="Login illustration" class="sign-in-image">
+    <img src="/assets/askify-logo.webp" alt="Login illustration" class="auth-image">
   </div>
 </div>

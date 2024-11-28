@@ -5,6 +5,7 @@ import {map, Observable} from 'rxjs';
 import {API_CONSTANTS} from '../constants/api';
 import {SignInResponse} from './types/signInResponse';
 import {SignIn} from './types/signIn';
+import {SignUp} from './types/signUp';
 
 @Injectable({
   providedIn: 'root'
@@ -29,4 +30,7 @@ export class AuthService {
       );
   }
 
+  signUp(signUpData: SignUp): Observable<any> {
+    return this.http.post(API_CONSTANTS.USERS.SIGN_UP, signUpData);
+  }
 }
