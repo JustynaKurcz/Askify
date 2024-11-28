@@ -21,11 +21,14 @@
     </div>
 
     <div class="right-section">
-      <i
-        class="pi pi-user"
-        [pTooltip]="'User Profile'"
-        >
+      <i class="pi pi-user"
+         (click)="menu.toggle($event)"
+         style="cursor: pointer">
       </i>
+      <p-menu #menu
+              [popup]="true"
+              [model]="menuItems">
+      </p-menu>
     </div>
   </div>
 </div>
