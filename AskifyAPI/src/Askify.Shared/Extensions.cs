@@ -1,6 +1,7 @@
 using Askify.Shared.Auth;
 using Askify.Shared.Auth.Context;
 using Askify.Shared.Auth.Middlewares;
+using Askify.Shared.Exceptions;
 using Askify.Shared.Hash;
 using Askify.Shared.Validation;
 using Microsoft.AspNetCore.Builder;
@@ -49,8 +50,9 @@ public static class Extensions
 
     public static WebApplication UseMiddlewares(this WebApplication app)
     {
-        app.UseMiddleware<ValidationExceptionMiddleware>();
         app.UseMiddleware<TokenExpirationMiddleware>();
+        app.UseMiddleware<ExceptionMiddleware>();
+        
 
         return app;
     }

@@ -1,6 +1,7 @@
 using Askify.Api;
 using Askify.Shared;
 using Askify.Shared.Auth;
+using Askify.Shared.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRouting();
 
 app.UseMiddlewares();
 app.MapEndpoints();

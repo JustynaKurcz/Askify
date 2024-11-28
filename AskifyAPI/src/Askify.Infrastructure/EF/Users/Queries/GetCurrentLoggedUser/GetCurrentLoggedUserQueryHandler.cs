@@ -1,6 +1,6 @@
 using Askify.Application.Users.Queries.DTO;
 using Askify.Application.Users.Queries.GetCurrentLoggedUser;
-using Askify.Core.Users.Errors;
+using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth.Context;
 using Askify.Shared.Results;
@@ -20,10 +20,8 @@ internal sealed class GetCurrentLoggedUserQueryHandler(
         var user = await userRepository.GetAsync(userId, cancellationToken);
 
         if (user is null)
-        {
-            return UserError.UserNotFound(userId);
-        }
-        
+            throw new UserException.UserNotFoundException(userId);
+
         return user.AsDetailsDto();
     }
 }

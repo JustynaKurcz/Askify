@@ -1,6 +1,5 @@
 using Askify.Application.Users.Commands.SignUp;
 using Askify.Shared.Endpoints;
-using Askify.Shared.Results;
 using MediatR;
 
 namespace Askify.Api.Endpoints.Users.Commands.SignUp;
@@ -16,11 +15,7 @@ internal sealed class SignUpEndpoint : IEndpointDefinition
             ) =>
             {
                 var result = await mediator.Send(command, cancellationToken);
-
-                return result.Match(
-                    success => Results.Created(string.Empty, success),
-                    Results.BadRequest
-                );
+                return Results.Created(UserEndpoints.BasePath, result);
             })
             .WithOpenApi(option => new OpenApiOperation(option)
             {
@@ -29,6 +24,6 @@ internal sealed class SignUpEndpoint : IEndpointDefinition
             })
             .WithTags(UserEndpoints.Users)
             .Produces<SignUpResponse>(StatusCodes.Status201Created)
-            .Produces<Error>(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest);
     }
 }
