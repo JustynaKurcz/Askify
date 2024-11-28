@@ -6,7 +6,7 @@ import {NgClass, NgIf} from '@angular/common';
 import {PasswordModule} from 'primeng/password';
 import {Button} from 'primeng/button';
 import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {ToastService} from '../../services/toast.service';
 
 @Component({
@@ -20,7 +20,8 @@ import {ToastService} from '../../services/toast.service';
     NgClass,
     NgIf,
     PasswordModule,
-    Button
+    Button,
+    RouterLink
   ],
   providers: [AuthService, ToastService],
   styleUrls: ['./sign-in.component.css']

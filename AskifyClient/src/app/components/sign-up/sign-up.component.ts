@@ -8,7 +8,7 @@ import {PasswordModule} from 'primeng/password';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {ToastService} from '../../services/toast.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -21,7 +21,8 @@ import {Router} from '@angular/router';
     PaginatorModule,
     PasswordModule,
     ReactiveFormsModule,
-    NgClass
+    NgClass,
+    RouterLink
   ],
   providers: [AuthService, ToastService],
   templateUrl: './sign-up.component.html',
