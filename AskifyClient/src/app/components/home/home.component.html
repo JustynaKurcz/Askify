@@ -1,1 +1,12 @@
-<p>home works!</p>
+<div class="faq-container">
+  <h1>Sekcja FAQ</h1>
+
+  <p-accordion [multiple]="false">
+    <p-accordionTab
+      *ngFor="let item of faqItems"
+      [header]="item.question"
+    >
+      <p>{{ item.answer }}</p>
+    </p-accordionTab>
+  </p-accordion>
+</div>
