@@ -22,10 +22,10 @@ internal sealed class GetAnswersForQuestionEndpoint : IEndpointDefinition
             })
             .WithOpenApi(operation => new OpenApiOperation(operation)
             {
-                Summary = "Browse questions",
-                Description = "This endpoint allows you to browse questions.",
+                Summary = "Get answers for question",
+                Description = "This endpoint allows get answers for question.",
             })
-            .WithTags(QuestionEndpoints.Questions)
+            .WithTags(AnswerEndpoints.Answers)
             .Produces<List<QuestionDto>>(StatusCodes.Status200OK)
             .RequireAuthorization();
     }
