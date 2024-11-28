@@ -12,6 +12,17 @@ builder.Services.LoadLayers(builder.Configuration);
 builder.Services.AddAuthorization();
 builder.Services.AddPolicy();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+
+        });
+});
 
 var app = builder.Build();
 
@@ -22,6 +33,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddlewares();
+app.UseCors("AllowAllOrigins");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapEndpoints();
 app.UseHttpsRedirection();
 
