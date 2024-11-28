@@ -1,22 +1,22 @@
 import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
-import {NgOptimizedImage} from '@angular/common';
+import {NgForOf, NgOptimizedImage} from '@angular/common';
 import {AvatarModule} from 'primeng/avatar';
 import {MenuModule} from 'primeng/menu';
 import {InputTextModule} from 'primeng/inputtext';
 import {MenuItem} from 'primeng/api';
 import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    Button,
     NgOptimizedImage,
     AvatarModule,
     MenuModule,
-    InputTextModule
+    InputTextModule,
+    Button,
+    NgForOf
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
@@ -25,22 +25,39 @@ export class NavbarComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
 
+  userMenuItems: MenuItem[] | undefined;
   menuItems: MenuItem[] | undefined;
 
   ngOnInit() {
-    this.updateMenuItems(this.authService.isLoggedIn());
+    this.updateUserMenuItems(this.authService.isLoggedIn());
+    this.initializeMenuItem();
 
     this.authService.getAuthState().subscribe(
       (isLoggedIn: boolean) => {
-        this.updateMenuItems(isLoggedIn);
+        this.updateUserMenuItems(isLoggedIn);
         this.cdr.detectChanges();
       }
     );
   }
 
-  private updateMenuItems(isLoggedIn : boolean) {
+  private initializeMenuItem() {
+    this.menuItems = [
+      {
+        label: 'Strona główna',
+        icon: 'pi pi-home',
+        routerLink: ['/home']
+      },
+      {
+        label: 'Pytania',
+        icon: 'pi pi-question',
+        routerLink: ['/questions']
+      }
+    ];
+  }
+
+  private updateUserMenuItems(isLoggedIn : boolean) {
     if (isLoggedIn) {
-      this.menuItems = [
+      this.userMenuItems = [
         {
           label: 'Moje konto',
           icon: 'pi pi-user',
@@ -59,7 +76,7 @@ export class NavbarComponent implements OnInit {
         }
       ];
     } else {
-      this.menuItems = [
+      this.userMenuItems = [
         {
           label: 'Zaloguj się',
           icon: 'pi pi-sign-in',
@@ -72,5 +89,9 @@ export class NavbarComponent implements OnInit {
         }
       ];
     }
+  }
+
+  navigateToHome() {
+    this
   }
 }

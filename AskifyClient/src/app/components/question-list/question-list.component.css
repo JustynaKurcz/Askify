@@ -1,0 +1,56 @@
+:host ::ng-deep {
+  .p-card {
+    .p-card-content {
+      padding: 0;
+    }
+  }
+
+  .p-datatable {
+    .p-datatable-header {
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .p-datatable-thead > tr > th {
+      background: var(--surface-50);
+      padding: 1rem;
+      font-weight: 600;
+    }
+
+    .p-datatable-tbody > tr {
+      transition: background-color 0.2s;
+
+      > td {
+        padding: 1rem;
+      }
+
+      &:hover {
+        background: var(--surface-100) !important;
+      }
+    }
+  }
+
+  .question-dialog {
+    .p-dialog-header {
+      padding: 1.5rem;
+      background: var(--surface-50);
+    }
+
+    .p-dialog-content {
+      padding: 0;
+    }
+
+    .question-content {
+      background: var(--surface-50);
+    }
+  }
+
+  .p-tag {
+    padding: 0.3rem 0.8rem;
+  }
+
+  .p-button.p-button-text:enabled:hover {
+    background: var(--surface-100);
+  }
+}
