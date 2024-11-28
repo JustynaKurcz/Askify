@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken);
     Task<bool> AnyAsync(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken);
     Task<User?> GetAsync(Guid id, CancellationToken cancellationToken);
+    Task DeleteAsync(User user);
 }
