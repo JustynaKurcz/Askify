@@ -18,4 +18,12 @@ public sealed class AnswerException
         {
         }
     }
+    
+    public sealed class AnswerNotBelongToUser : AskifyException
+    {
+        public AnswerNotBelongToUser() : base("Answer does not belong to the user.")
+        {
+        }
+    }
+
 }

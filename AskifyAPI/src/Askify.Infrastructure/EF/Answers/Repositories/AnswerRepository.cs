@@ -21,7 +21,7 @@ internal sealed class AnswerRepository(AskifyDbContext dbContext) : IAnswerRepos
     public async Task DeleteAsync(Answer answer)
         => _answers.Remove(answer);
 
-    public async Task<IQueryable<Answer>> GetAll(Guid questionId, CancellationToken cancellationToken)
+    public async Task<IQueryable<Answer>> GetAnswerForQuestion(Guid questionId, CancellationToken cancellationToken)
         => _answers
             .Where(x => x.QuestionId == questionId)
             .AsSplitQuery()

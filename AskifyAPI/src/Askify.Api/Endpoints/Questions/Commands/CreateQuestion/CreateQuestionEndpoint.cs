@@ -18,9 +18,7 @@ internal sealed class CreateQuestionEndpoint : IEndpointDefinition
             {
                 var result = await mediator.Send(command, cancellationToken);
 
-                return result.Match(
-                    success => Results.Created(string.Empty, success),
-                    Results.BadRequest);
+                return Results.Created(QuestionEndpoints.BasePath, result);
             })
             .RequireAuthorization(AuthorizationPolicies.UserPolicy)
             .WithOpenApi(options => new OpenApiOperation(options)
@@ -30,6 +28,6 @@ internal sealed class CreateQuestionEndpoint : IEndpointDefinition
             })
             .WithTags(QuestionEndpoints.Questions)
             .Produces<CreateQuestionResponse>(StatusCodes.Status201Created)
-            .Produces<Error>(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest);
     }
 }
