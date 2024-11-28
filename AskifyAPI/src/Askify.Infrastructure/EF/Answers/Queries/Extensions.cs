@@ -9,6 +9,7 @@ internal static class Extensions
         => new(
             AnswerId: answer.Id,
             Content: answer.Content,
-            CreatedAt: answer.CreatedAt
+            CreatedAt: answer.CreatedAt,
+            UserId: answer.UserId   
         );
 }
