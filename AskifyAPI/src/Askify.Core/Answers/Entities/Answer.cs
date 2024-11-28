@@ -21,4 +21,7 @@ public class Answer
     {
         Content = content;
     }
+
+    public void ChangeInformation(string content)
+        => Content = content;
 }

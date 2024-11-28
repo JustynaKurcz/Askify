@@ -9,6 +9,6 @@ public interface IAnswerRepository
     Task<bool> AnyAsync(Expression<Func<Answer, bool>> predicate, CancellationToken cancellationToken);
     Task SaveChangesAsync(CancellationToken cancellationToken);
     Task DeleteAsync(Answer answer);
-    Task<IQueryable<Answer>> GetAll(Guid questionId, CancellationToken cancellationToken);
+    Task<IQueryable<Answer>> GetAnswerForQuestion(Guid questionId, CancellationToken cancellationToken);
     Task<Answer?> GetAsync(Guid answerId, bool asNoTracking, CancellationToken cancellationToken);
 }
