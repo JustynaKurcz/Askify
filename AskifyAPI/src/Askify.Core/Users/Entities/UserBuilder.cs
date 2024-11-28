@@ -25,7 +25,7 @@ public class UserBuilder
         _user.Password = password;
         return this;
     }
-    
+
     public UserBuilder WithRole(Role role)
     {
         _user.Role = role;

@@ -17,3 +17,19 @@ h2 {
   color: #0056b3;
   cursor: pointer;
 }
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  justify-content: center;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+span {
+  justify-content: center;
+  display: flex;
+}

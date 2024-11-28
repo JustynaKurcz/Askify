@@ -1,5 +1,4 @@
 using Askify.Core.Questions.Entities;
-using Askify.Core.Users.Entities;
 
 namespace Askify.Core.Answers.Entities;
 

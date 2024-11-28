@@ -1,7 +1,6 @@
 using Askify.Api;
 using Askify.Shared;
 using Askify.Shared.Auth;
-using Askify.Shared.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +13,16 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 builder.Services.AddPolicy();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -29,6 +38,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddlewares();
+app.UseCors("AllowAllOrigins");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapEndpoints();
 app.UseHttpsRedirection();
 

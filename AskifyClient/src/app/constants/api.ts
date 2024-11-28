@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5189/api/v1';
+const API_URL = 'http://localhost:5244/api/v1';
 export const API_CONSTANTS = {
   USERS: {
     BASE_PATH: `${API_URL}/users`,

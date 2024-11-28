@@ -22,7 +22,7 @@ internal sealed class SignUpCommandHandler(
             );
 
         if (userExists)
-           throw new UserException.UserAlreadyExistsException();
+            throw new UserException.UserAlreadyExistsException();
 
         var hashedPassword = passwordHasher.HashPassword(command.Password);
 

@@ -19,7 +19,7 @@ public class QuestionBuilder
         _question.Content = content;
         return this;
     }
-    
+
     public QuestionBuilder WithTag(Tag tag)
     {
         _question.Tag = tag;

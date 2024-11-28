@@ -16,7 +16,7 @@ internal sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
             .NotNull().WithMessage("Password cannot be null")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long")
             .MaximumLength(16).WithMessage("Password must be at most 16 characters long");
-        
+
         RuleFor(x => x.UserName)
             .NotEmpty().WithMessage("UserName cannot be empty")
             .NotNull().WithMessage("UserName cannot be null")
