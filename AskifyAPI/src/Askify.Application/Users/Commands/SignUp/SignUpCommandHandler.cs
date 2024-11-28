@@ -1,9 +1,8 @@
 using Askify.Core.Users.Entities;
 using Askify.Core.Users.Enums;
-using Askify.Core.Users.Errors;
+using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Hash;
-using Askify.Shared.Results;
 using MediatR;
 
 namespace Askify.Application.Users.Commands.SignUp;
@@ -11,9 +10,9 @@ namespace Askify.Application.Users.Commands.SignUp;
 internal sealed class SignUpCommandHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher)
-    : IRequestHandler<SignUpCommand, Result<SignUpResponse, Error>>
+    : IRequestHandler<SignUpCommand, SignUpResponse>
 {
-    public async Task<Result<SignUpResponse, Error>> Handle(SignUpCommand command,
+    public async Task<SignUpResponse> Handle(SignUpCommand command,
         CancellationToken cancellationToken)
     {
         var userExists = await userRepository
@@ -23,9 +22,7 @@ internal sealed class SignUpCommandHandler(
             );
 
         if (userExists)
-        {
-            return UserError.UsernameInUse;
-        }
+           throw new UserException.UserAlreadyExistsException();
 
         var hashedPassword = passwordHasher.HashPassword(command.Password);
 

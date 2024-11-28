@@ -1,6 +1,5 @@
 using Askify.Application.Users.Commands.SignIn;
 using Askify.Shared.Endpoints;
-using Askify.Shared.Results;
 using MediatR;
 
 namespace Askify.Api.Endpoints.Users.Commands.SignIn;
@@ -16,11 +15,7 @@ internal sealed class SignInEndpoint : IEndpointDefinition
             ) =>
             {
                 var result = await mediator.Send(command, cancellationToken);
-
-                return result.Match(
-                    Results.Ok,
-                    Results.BadRequest
-                );
+                return Results.Ok(result);
             })
             .WithOpenApi(operation => new OpenApiOperation(operation)
             {
@@ -29,6 +24,6 @@ internal sealed class SignInEndpoint : IEndpointDefinition
             })
             .WithTags(UserEndpoints.Users)
             .Produces<SignInResponse>(StatusCodes.Status200OK)
-            .Produces<Error>(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest);
     }
 }

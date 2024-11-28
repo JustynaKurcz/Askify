@@ -1,7 +1,7 @@
 using Askify.Core.Questions.Entities;
-using Askify.Core.Questions.Errors;
+using Askify.Core.Questions.Exceptions;
 using Askify.Core.Questions.Repositories;
-using Askify.Core.Users.Errors;
+using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth.Context;
 using Askify.Shared.Results;
@@ -27,17 +27,13 @@ internal sealed class CreateQuestionCommandHandler(
             );
 
         if (existingQuestionForUser)
-        {
-            return QuestionError.QuestionExistsForUser;
-        }
+            throw new QuestionException.QuestionExistsForUser();
 
         var userExists = await userRepository
             .AnyAsync(x => x.Id == userId, cancellationToken);
 
         if (!userExists)
-        {
-            return UserError.UserNotFound(userId);
-        }
+            throw new UserException.UserNotFoundException(userId);
 
         var question = new QuestionBuilder()
             .WithTitle(command.Title)

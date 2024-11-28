@@ -1,8 +1,7 @@
-using Askify.Core.Users.Errors;
+using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth;
 using Askify.Shared.Hash;
-using Askify.Shared.Results;
 using MediatR;
 using Microsoft.OpenApi.Extensions;
 
@@ -12,24 +11,20 @@ internal sealed class SignInCommandHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
     IAuthManager authManager)
-    : IRequestHandler<SignInCommand, Result<SignInResponse, Error>>
+    : IRequestHandler<SignInCommand, SignInResponse>
 {
-    public async Task<Result<SignInResponse, Error>> Handle(SignInCommand command,
+    public async Task<SignInResponse> Handle(SignInCommand command,
         CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByEmailAsync(command.Email, cancellationToken);
 
         if (user is null)
-        {
-            return UserError.UserNotFound(command.Email);
-        }
+            throw new UserException.UserNotFoundException(command.Email);
 
         var isValidPassword = passwordHasher.VerifyHashedPassword(user.Password, command.Password);
 
         if (!isValidPassword)
-        {
-            return UserError.InvalidPassword;
-        }
+            throw new UserException.InvalidPasswordException();
 
         var jwt = authManager.GenerateToken(user.Id, user.Role.GetDisplayName());
 

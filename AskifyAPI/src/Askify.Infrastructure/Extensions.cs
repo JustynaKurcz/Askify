@@ -1,6 +1,8 @@
 using System.Reflection;
+using Askify.Core.Answers.Repositories;
 using Askify.Core.Questions.Repositories;
 using Askify.Core.Users.Repositories;
+using Askify.Infrastructure.EF.Answers.Repositories;
 using Askify.Infrastructure.EF.DbContext;
 using Askify.Infrastructure.EF.Questions.Repositories;
 using Askify.Infrastructure.EF.Users.Repositories;
@@ -27,6 +29,7 @@ internal static class Extensions
         
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IQuestionRepository, QuestionRepository>();
+        services.AddScoped<IAnswerRepository, AnswerRepository>();
 
         return services;
     }
