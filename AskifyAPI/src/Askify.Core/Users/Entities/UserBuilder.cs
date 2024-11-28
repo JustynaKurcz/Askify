@@ -14,9 +14,9 @@ public class UserBuilder
         return this;
     }
 
-    public UserBuilder WithUsername(string username)
+    public UserBuilder WithUserName(string userName)
     {
-        _user.Username = username;
+        _user.UserName = userName;
         return this;
     }
 

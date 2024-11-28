@@ -7,7 +7,7 @@ public class User
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public string Email { get; set; }
-    public string Username { get; set; }
+    public string UserName { get; set; }
     public string Password { get; set; }
     public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
     public DateTimeOffset? UpdatedAt { get; set; }
