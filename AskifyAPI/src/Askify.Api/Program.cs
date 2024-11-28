@@ -11,6 +11,7 @@ builder.Services.AddSwagger();
 builder.Services.LoadLayers(builder.Configuration);
 
 builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
 builder.Services.AddPolicy();
 
 
@@ -23,6 +24,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseMiddlewares();
 app.MapEndpoints();
