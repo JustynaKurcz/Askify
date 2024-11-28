@@ -16,12 +16,16 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path:'',
+    path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
   {
-    path:'**',
+    path: 'questions',
+    loadComponent: () => import('./components/question-list/question-list.component').then(m => m.QuestionListComponent)
+  },
+  {
+    path: '**',
     loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
   }
 ];

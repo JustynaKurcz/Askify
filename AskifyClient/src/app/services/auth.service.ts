@@ -1,4 +1,4 @@
-import {BehaviorSubject, map, Observable} from 'rxjs';
+import {BehaviorSubject, map, Observable, tap} from 'rxjs';
 import {API_CONSTANTS} from '../constants/api';
 import {SignUp} from './types/signUp';
 import {SignInResponse} from './types/signInResponse';
@@ -7,6 +7,16 @@ import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {JwtHelperService} from '@auth0/angular-jwt';
+
+
+export type User = {
+  id: string;
+  email: string;
+  userName: string;
+  createdAt: Date;
+  role: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +52,23 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
   }
 
+  getCurrentUser() {
+    return this.http.get<User>(API_CONSTANTS.USERS.BASE_PATH).pipe(
+      tap(user => {
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userName', user.userName);
+      })
+    );
+  }
+
+  getCurrentUserId(): string | null {
+    return localStorage.getItem('userId');
+  }
+
+  getCurrentUserName(): string | null {
+    return localStorage.getItem('userName');
+  }
+
   isLoggedIn() {
     const localStorage = this.document.defaultView?.localStorage;
     const jwtHelper = new JwtHelperService();
@@ -57,5 +84,9 @@ export class AuthService {
 
   getAuthState(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
+  }
+
+  getUserName(userId: string) : Observable<any> {
+    return this.http.get<any>(API_CONSTANTS.USERS.BASE_PATH + `/${userId}/name`);
   }
 }

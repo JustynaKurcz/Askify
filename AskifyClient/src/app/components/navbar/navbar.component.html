@@ -6,15 +6,12 @@
     </div>
 
     <div class="nav-items">
-      <p-button
-        label="Home"
-        icon="pi pi-home"
-        styleClass="p-button-text">
-      </p-button>
 
       <p-button
-        label="Questions"
-        icon="pi pi-question-circle"
+        *ngFor="let item of menuItems"
+        [label]="item.label"
+        [icon]="item.icon"
+        [routerLink]="item.routerLink"
         styleClass="p-button-text">
       </p-button>
 
@@ -27,7 +24,7 @@
       </i>
       <p-menu #menu
               [popup]="true"
-              [model]="menuItems">
+              [model]="userMenuItems">
       </p-menu>
     </div>
   </div>
