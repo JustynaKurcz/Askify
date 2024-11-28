@@ -25,4 +25,7 @@ internal sealed class UserRepository(AskifyDbContext dbContext) : IUserRepositor
     public async Task<User?> GetAsync(Guid id, CancellationToken cancellationToken)
         => await _users
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+
+    public async Task DeleteAsync(User user)
+        => _users.Remove(user);
 }
