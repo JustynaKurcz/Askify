@@ -1,5 +1,6 @@
 using Askify.Api.Endpoints.Questions;
 using Askify.Application.Answers.Queries.GetAnswersForQuestion;
+using Askify.Application.Answers.Queries.GetAnswersForQuestion.DTO;
 using Askify.Application.Questions.Queries.BrowseQuestions.DTO;
 using Askify.Shared.Endpoints;
 using MediatR;
@@ -26,7 +27,7 @@ internal sealed class GetAnswersForQuestionEndpoint : IEndpointDefinition
                 Description = "This endpoint allows get answers for question.",
             })
             .WithTags(AnswerEndpoints.Answers)
-            .Produces<List<QuestionDto>>(StatusCodes.Status200OK)
+            .Produces<List<AnswerDto>>(StatusCodes.Status200OK)
             .RequireAuthorization();
     }
 }
