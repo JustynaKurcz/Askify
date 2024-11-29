@@ -1,0 +1,188 @@
+.account-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+
+  :host ::ng-deep .account-card {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: none;
+    overflow: hidden;
+
+    .p-card-body {
+      padding: 0;
+    }
+  }
+
+  .profile-section {
+    background: linear-gradient(to right, #8a2be2, #9945FF);
+    padding: 4rem 3rem;
+    margin-bottom: 3rem;
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      color: white;
+
+      .profile-picture {
+        width: 140px;
+        height: 140px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+
+        i {
+          font-size: 3.5rem;
+          color: white;
+        }
+      }
+
+      .basic-info {
+        h1 {
+          margin: 0 0 0.5rem 0;
+          font-size: 3rem;
+          font-weight: 600;
+        }
+
+        .role-badge {
+          background: rgba(255, 255, 255, 0.15);
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 12px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 0 3rem 3rem 3rem;
+
+    .info-card {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        background: white;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        color: #64748b;
+
+        i {
+          font-size: 2rem;
+          color: #8a2be2;
+        }
+
+        span {
+          font-size: 1.2rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      .info-content {
+        font-size: 1.3rem;
+        color: #1e293b;
+        font-weight: 600;
+
+        &.status-active {
+          color: #10b981;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1400px) { // Bardzo duże ekrany
+.account-container {
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
+    .info-card {
+      padding: 2.5rem;
+
+      .info-header {
+        margin-bottom: 1.5rem;
+
+        i {
+          font-size: 1.75rem;
+        }
+
+        span {
+          font-size: 1.2rem;
+        }
+      }
+
+      .info-content {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+}
+
+@media (max-width: 991px) { // Średnie ekrany
+.account-container {
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 0 2rem 2rem 2rem;
+  }
+}
+}
+
+@media (max-width: 768px) { // Małe ekrany
+.account-container {
+  padding: 0 1rem;
+
+  .profile-section {
+    padding: 2rem 1.5rem;
+
+    .profile-info {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+
+      .profile-picture {
+        width: 120px;
+        height: 120px;
+      }
+
+      .basic-info h1 {
+        font-size: 1.75rem;
+      }
+    }
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+
+    .info-card {
+      padding: 1.5rem;
+
+      .info-content {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+}

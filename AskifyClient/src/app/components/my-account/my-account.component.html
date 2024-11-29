@@ -1,0 +1,58 @@
+<div class="account-container">
+  <p-card styleClass="account-card">
+    <div class="profile-section">
+      <div class="profile-info">
+        <div class="profile-picture">
+          <i class="pi pi-user"></i>
+        </div>
+        <div class="basic-info">
+          <h1>{{userAccount.userName}}</h1>
+        </div>
+      </div>
+    </div>
+
+    <p-skeleton *ngIf="loading" width="100%" height="150px"></p-skeleton>
+
+    <div *ngIf="!loading" class="details-grid">
+      <div class="info-card">
+        <div class="info-header">
+          <i class="pi pi-at"></i>
+          <span>Email</span>
+        </div>
+        <div class="info-content">
+          {{userAccount.email}}
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-header">
+          <i class="pi pi-user"></i>
+          <span>Nazwa użytkownika</span>
+        </div>
+        <div class="info-content">
+          {{userAccount.userName}}
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-header">
+          <i class="pi pi-clock"></i>
+          <span>Data utworzenia konta</span>
+        </div>
+        <div class="info-content">
+          {{formatDate(userAccount.createdAt)}}
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-header">
+          <i class="pi pi-shield"></i>
+          <span>Rola</span>
+        </div>
+        <div class="info-content status-active">
+          {{userAccount.role}}
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>
