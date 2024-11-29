@@ -1,6 +1,5 @@
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth.Context;
-using MediatR;
 
 namespace Askify.Application.Users.Commands.DeleteUser;
 

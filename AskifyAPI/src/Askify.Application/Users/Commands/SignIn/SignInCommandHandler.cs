@@ -2,7 +2,6 @@ using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth;
 using Askify.Shared.Hash;
-using MediatR;
 using Microsoft.OpenApi.Extensions;
 
 namespace Askify.Application.Users.Commands.SignIn;

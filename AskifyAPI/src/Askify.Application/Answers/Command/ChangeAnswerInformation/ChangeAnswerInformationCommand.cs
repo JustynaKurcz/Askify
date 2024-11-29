@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace Askify.Application.Answers.Command.ChangeAnswerInformation;
 
 public record ChangeAnswerInformationCommand(string Content) : IRequest

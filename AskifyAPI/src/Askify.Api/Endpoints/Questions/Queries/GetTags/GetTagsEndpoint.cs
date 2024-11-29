@@ -1,5 +1,4 @@
 using Askify.Core.Questions.Enums;
-using Askify.Shared.Endpoints;
 using Microsoft.OpenApi.Attributes;
 
 namespace Askify.Api.Endpoints.Questions.Queries.GetTags;
@@ -32,6 +31,7 @@ internal sealed class GetTagsEndpoint : IEndpointDefinition
             })
             .WithTags(QuestionEndpoints.Questions)
             .Produces<List<TagResponse>>(StatusCodes.Status200OK)
-            .RequireAuthorization();
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
     }
 }

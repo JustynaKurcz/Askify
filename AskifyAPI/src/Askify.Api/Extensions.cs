@@ -2,7 +2,6 @@ using Askify.Application;
 using Askify.Core;
 using Askify.Infrastructure;
 using Askify.Shared;
-using Askify.Shared.Endpoints;
 
 namespace Askify.Api;
 

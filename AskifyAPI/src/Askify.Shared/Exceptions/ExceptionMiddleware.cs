@@ -1,3 +1,4 @@
+using Askify.Shared.Auth.Middlewares;
 using Askify.Shared.Results;
 using Humanizer;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,9 @@ internal class ExceptionMiddleware : IMiddleware
     {
         var (statusCode, error) = exception switch
         {
+            TokenExpiredException or InvalidTokenException => (StatusCodes.Status401Unauthorized,
+                new Error(exception.GetType().Name.Underscore().Replace("_exception", string.Empty),
+                    exception.Message)),
             AskifyException => (StatusCodes.Status400BadRequest,
                 new Error(exception.GetType().Name.Underscore().Replace("_exception", string.Empty),
                     exception.Message)),

@@ -4,8 +4,6 @@ using Askify.Core.Questions.Repositories;
 using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth.Context;
-using Askify.Shared.Results;
-using MediatR;
 
 namespace Askify.Application.Questions.Commands.CreateQuestion;
 
@@ -13,9 +11,9 @@ internal sealed class CreateQuestionCommandHandler(
     IQuestionRepository questionRepository,
     IUserRepository userRepository,
     IContext context
-) : IRequestHandler<CreateQuestionCommand, Result<CreateQuestionResponse, Error>>
+) : IRequestHandler<CreateQuestionCommand, CreateQuestionResponse>
 {
-    public async Task<Result<CreateQuestionResponse, Error>> Handle(CreateQuestionCommand command,
+    public async Task<CreateQuestionResponse> Handle(CreateQuestionCommand command,
         CancellationToken cancellationToken)
     {
         var userId = context.Identity.Id;
@@ -39,6 +37,7 @@ internal sealed class CreateQuestionCommandHandler(
             .WithTitle(command.Title)
             .WithContent(command.Content)
             .WithUser(userId)
+            .WithTag(command.Tag)
             .Build();
 
         await questionRepository.AddAsync(question, cancellationToken);

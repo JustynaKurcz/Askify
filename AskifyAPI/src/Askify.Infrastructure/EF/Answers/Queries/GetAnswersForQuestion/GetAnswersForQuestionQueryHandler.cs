@@ -1,7 +1,6 @@
 using Askify.Application.Answers.Queries.GetAnswersForQuestion;
 using Askify.Application.Answers.Queries.GetAnswersForQuestion.DTO;
 using Askify.Core.Answers.Repositories;
-using MediatR;
 
 namespace Askify.Infrastructure.EF.Answers.Queries.GetAnswersForQuestion;
 

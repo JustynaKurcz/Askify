@@ -1,9 +1,6 @@
 using Askify.Api.Endpoints.Questions;
 using Askify.Application.Answers.Queries.GetAnswersForQuestion;
 using Askify.Application.Answers.Queries.GetAnswersForQuestion.DTO;
-using Askify.Application.Questions.Queries.BrowseQuestions.DTO;
-using Askify.Shared.Endpoints;
-using MediatR;
 
 namespace Askify.Api.Endpoints.Answers.Queries.GetAnswersForQuestion;
 
@@ -28,6 +25,7 @@ internal sealed class GetAnswersForQuestionEndpoint : IEndpointDefinition
             })
             .WithTags(AnswerEndpoints.Answers)
             .Produces<List<AnswerDto>>(StatusCodes.Status200OK)
-            .RequireAuthorization();
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
     }
 }

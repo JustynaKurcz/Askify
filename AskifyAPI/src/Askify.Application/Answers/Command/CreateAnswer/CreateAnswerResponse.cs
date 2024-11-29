@@ -1,3 +1,3 @@
-namespace Askify.Application.Answers.CreateAnswer;
+namespace Askify.Application.Answers.Command.CreateAnswer;
 
 internal record CreateAnswerResponse(Guid AnswerId);

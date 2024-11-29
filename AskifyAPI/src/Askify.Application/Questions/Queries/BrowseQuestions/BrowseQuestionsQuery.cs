@@ -1,6 +1,9 @@
 using Askify.Application.Questions.Queries.BrowseQuestions.DTO;
-using MediatR;
 
 namespace Askify.Application.Questions.Queries.BrowseQuestions;
 
-public record BrowseQuestionsQuery() : IRequest<List<QuestionDto>>;
+public sealed class BrowseQuestionsQuery : PagedQuery, IRequest<PagedResponse<QuestionDto>>
+{
+    [SwaggerParameter("Search filter - matches against question's title")]
+    public string? Search { get; set; }
+}

@@ -1,7 +1,6 @@
-using Askify.Shared.Results;
-using MediatR;
+using Askify.Core.Questions.Enums;
 
 namespace Askify.Application.Questions.Commands.CreateQuestion;
 
-internal record CreateQuestionCommand(string Title, string Content)
-    : IRequest<Result<CreateQuestionResponse, Error>>;
+internal record CreateQuestionCommand(string Title, string Content, Tag Tag)
+    : IRequest<CreateQuestionResponse>;

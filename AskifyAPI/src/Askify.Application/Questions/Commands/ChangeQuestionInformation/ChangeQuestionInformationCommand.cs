@@ -1,5 +1,4 @@
 using Askify.Core.Questions.Enums;
-using MediatR;
 
 namespace Askify.Application.Questions.Commands.ChangeQuestionInformation;
 

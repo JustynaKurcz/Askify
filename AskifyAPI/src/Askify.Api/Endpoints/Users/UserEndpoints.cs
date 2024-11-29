@@ -6,4 +6,5 @@ public static class UserEndpoints
     public static string BasePath => $"{RootPath.BasePath}/{Users.ToLowerInvariant()}";
     public static string SignUp => $"{RootPath.BasePath}/users/sign-up";
     public static string SignIn => $"{RootPath.BasePath}/users/sign-in";
+    public static string GetCurrentUser => $"{RootPath.BasePath}/users/current";
 }

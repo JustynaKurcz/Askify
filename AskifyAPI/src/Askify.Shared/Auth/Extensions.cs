@@ -12,7 +12,7 @@ public static class Extensions
                 policy => policy.RequireRole(nameof(User), nameof(Admin)))
             .AddPolicy(AuthorizationPolicies.AdminPolicy,
                 policy => policy.RequireRole(nameof(Admin)));
-
+    
         return services;
     }
 }

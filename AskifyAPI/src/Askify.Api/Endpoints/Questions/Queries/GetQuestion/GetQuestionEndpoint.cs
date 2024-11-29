@@ -1,7 +1,5 @@
 using Askify.Application.Questions.Queries.BrowseQuestions.DTO;
 using Askify.Application.Questions.Queries.GetQuestion;
-using Askify.Shared.Endpoints;
-using MediatR;
 
 namespace Askify.Api.Endpoints.Questions.Queries.GetQuestion;
 

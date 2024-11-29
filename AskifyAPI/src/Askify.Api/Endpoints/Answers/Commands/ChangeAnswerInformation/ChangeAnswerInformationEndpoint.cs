@@ -1,6 +1,4 @@
 using Askify.Api.Endpoints.Questions;
-using Askify.Shared.Endpoints;
-using MediatR;
 
 namespace Askify.Api.Endpoints.Answers.Commands.ChangeAnswerInformation;
 
@@ -29,6 +27,7 @@ internal sealed class ChangeAnswerInformationEndpoint : IEndpointDefinition
             .WithTags(AnswerEndpoints.Answers)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
-            .RequireAuthorization();
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
     }
 }

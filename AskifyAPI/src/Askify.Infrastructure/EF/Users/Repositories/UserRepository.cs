@@ -1,7 +1,5 @@
-using System.Linq.Expressions;
 using Askify.Core.Users.Entities;
 using Askify.Core.Users.Repositories;
-using Askify.Infrastructure.EF.DbContext;
 
 namespace Askify.Infrastructure.EF.Users.Repositories;
 
@@ -28,4 +26,9 @@ internal sealed class UserRepository(AskifyDbContext dbContext) : IUserRepositor
 
     public async Task DeleteAsync(User user)
         => _users.Remove(user);
+
+    public async Task<IQueryable<User>> GetAll(CancellationToken cancellationToken)
+        => _users
+            .AsSplitQuery()
+            .AsQueryable();
 }

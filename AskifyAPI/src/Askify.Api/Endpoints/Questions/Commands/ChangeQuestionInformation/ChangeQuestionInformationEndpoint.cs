@@ -1,8 +1,4 @@
 using Askify.Application.Questions.Commands.ChangeQuestionInformation;
-using Askify.Shared.Auth.Policies;
-using Askify.Shared.Endpoints;
-using Askify.Shared.Results;
-using MediatR;
 
 namespace Askify.Api.Endpoints.Questions.Commands.ChangeQuestionInformation;
 
@@ -22,7 +18,6 @@ internal sealed class ChangeQuestionInformationEndpoint : IEndpointDefinition
 
                 return Results.NoContent();
             })
-            .RequireAuthorization(AuthorizationPolicies.UserPolicy)
             .WithOpenApi(option => new OpenApiOperation(option)
             {
                 Summary = "Change a question",
@@ -30,6 +25,8 @@ internal sealed class ChangeQuestionInformationEndpoint : IEndpointDefinition
             })
             .WithTags(QuestionEndpoints.Questions)
             .Produces(StatusCodes.Status204NoContent)
-            .Produces<Error>(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
     }
 }

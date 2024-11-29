@@ -3,7 +3,6 @@ using Askify.Core.Users.Enums;
 using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Hash;
-using MediatR;
 
 namespace Askify.Application.Users.Commands.SignUp;
 

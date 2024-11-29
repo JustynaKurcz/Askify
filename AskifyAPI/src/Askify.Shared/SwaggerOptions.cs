@@ -39,6 +39,8 @@ internal static class SwaggerOptions
                     Array.Empty<string>()
                 }
             });
+            
+            swagger.EnableAnnotations();
         });
 
 

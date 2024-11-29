@@ -1,4 +1,4 @@
-using Askify.Application.Answers.CreateAnswer;
+using Askify.Application.Answers.Command.CreateAnswer;
 
 namespace Askify.Api.Endpoints.Answers.Commands.CreateAnswer;
 
