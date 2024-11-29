@@ -21,6 +21,7 @@ public sealed class ResetPasswordEndpoint : IEndpointDefinition
                 Summary = "Reset password",
                 Description = "Reset user password using token from email",
             })
+            .WithTags(UserEndpoints.Users)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
     }
