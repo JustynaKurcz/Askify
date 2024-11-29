@@ -17,6 +17,11 @@ export interface Answer {
   userId: string
 }
 
+export type CreateQuestion = {
+  title: string;
+  content: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,11 +33,12 @@ export class QuestionService {
     return this.http.get<Question[]>(API_CONSTANTS.QUESTION.BROWSE);
   }
 
-  getQuestionDetails(questionId: string): Observable<Question> {
-    return this.http.get<Question>(API_CONSTANTS.QUESTION.BASE_PATH + `/${questionId}`);
-  }
 
   getQuestionAnswers(questionId: string): Observable<Answer[]> {
     return this.http.get<Answer[]>(API_CONSTANTS.QUESTION.BASE_PATH + `/${questionId}/answers`);
+  }
+
+  createQuestion(createQuestion: CreateQuestion) : Observable<any> {
+    return this.http.post<any>(API_CONSTANTS.QUESTION.BASE_PATH, createQuestion);
   }
 }
