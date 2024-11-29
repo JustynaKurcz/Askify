@@ -13,7 +13,6 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent),
-    canActivate: [authGuard]
   },
   {
     path: '',
@@ -22,7 +21,8 @@ export const routes: Routes = [
   },
   {
     path: 'questions',
-    loadComponent: () => import('./components/question-list/question-list.component').then(m => m.QuestionListComponent)
+    loadComponent: () => import('./components/question-list/question-list.component').then(m => m.QuestionListComponent),
+    canActivate: [authGuard]
   },
   {
     path: '**',

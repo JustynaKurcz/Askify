@@ -1,63 +1,82 @@
 <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" class="question-form">
-  <div class="form-field">
-    <label for="title" class="block text-base font-medium mb-2">Tytuł pytania</label>
-    <span class="p-input-icon-left w-full">
+    <div class="form-field">
+        <label for="title" class="block text-base font-medium mb-2">Tytuł pytania</label>
+        <span class="p-input-icon-left w-full">
       <i class="pi pi-question-circle"></i>
       <input
-        id="title"
-        type="text"
-        pInputText
-        formControlName="title"
-        placeholder="Wprowadź tytuł pytania"
-        class="w-full"
-        maxlength="100"
-        [class.ng-invalid]="questionForm.get('title')?.invalid && questionForm.get('title')?.touched"
+              id="title"
+              type="text"
+              pInputText
+              formControlName="title"
+              placeholder="Wprowadź tytuł pytania"
+              class="w-full"
+              maxlength="250"
+              [class.ng-invalid]="questionForm.get('title')?.invalid && questionForm.get('title')?.touched"
       />
     </span>
-    <div class="error-message">
-      <small *ngIf="questionForm.get('title')?.invalid && questionForm.get('title')?.touched">
-        Tytuł jest wymagany
-      </small>
-    </div>
-    <small class="character-count">
-      {{ titleLength }}/250
-    </small>
-  </div>
-
-  <div class="form-field">
-    <label for="content" class="block text-base font-medium mb-2">Treść pytania</label>
-    <textarea
-      id="content"
-      pInputTextarea
-      formControlName="content"
-      placeholder="Wprowadź treść pytania"
-      [rows]="5"
-      maxlength="5000"
-      [class.ng-invalid]="questionForm.get('content')?.invalid && questionForm.get('content')?.touched"
-    ></textarea>
-      <div class="error-message">
-        <small *ngIf="questionForm.get('content')?.invalid && questionForm.get('content')?.touched">
-          Treść jest wymagana
+        <div class="error-message">
+            <small *ngIf="questionForm.get('title')?.invalid && questionForm.get('title')?.touched">
+                Tytuł jest wymagany
+            </small>
+        </div>
+        <small class="character-count">
+            {{ titleLength }}/250
         </small>
-      </div>
-      <small class="character-count">
-        {{ contentLength }}/5000
-      </small>
-  </div>
+    </div>
 
-  <div class="form-actions">
-    <p-button
-      label="Anuluj"
-      styleClass="p-button-text cancel-button"
-      (onClick)="cancel()"
-    ></p-button>
-    <p-button
-      label="Dodaj pytanie"
-      type="submit"
-      [loading]="submitting"
-      [disabled]="!questionForm.valid || submitting"
-      styleClass="p-button-outlined submit-button"
-      [style]="{'border-color': '#9333ea', 'color': '#9333ea'}"
-    ></p-button>
-  </div>
+    <div class="form-field">
+        <label for="tagId" class="block text-base font-medium mb-2">Kategoria</label>
+        <p-dropdown
+                id="tagId"
+                [options]="tags"
+                formControlName="tagId"
+                optionLabel="displayName"
+                optionValue="id"
+                placeholder="Wybierz kategorię"
+                [class.ng-invalid]="questionForm.get('tagId')?.invalid && questionForm.get('tagId')?.touched"
+                styleClass="w-full"
+        ></p-dropdown>
+        <div class="error-message">
+            <small *ngIf="questionForm.get('tagId')?.invalid && questionForm.get('tagId')?.touched">
+                Wybierz kategorię
+            </small>
+        </div>
+    </div>
+
+    <div class="form-field">
+        <label for="content" class="block text-base font-medium mb-2">Treść pytania</label>
+        <textarea
+                id="content"
+                pInputTextarea
+                formControlName="content"
+                placeholder="Wprowadź treść pytania"
+                [rows]="5"
+                maxlength="5000"
+                [class.ng-invalid]="questionForm.get('content')?.invalid && questionForm.get('content')?.touched"
+        ></textarea>
+        <div class="error-message">
+            <small *ngIf="questionForm.get('content')?.invalid && questionForm.get('content')?.touched">
+                Treść jest wymagana
+            </small>
+        </div>
+        <small class="character-count">
+            {{ contentLength }}/5000
+        </small>
+    </div>
+
+    <div class="form-actions">
+        <p-button
+                label="Anuluj"
+                styleClass="p-button-text cancel-button"
+                (onClick)="cancel()"
+        ></p-button>
+        <p-button
+                label="Dodaj pytanie"
+                type="submit"
+                [loading]="submitting"
+                [disabled]="!questionForm.valid || submitting"
+                styleClass="p-button-outlined submit-button"
+                [style]="{'border-color': '#9333ea', 'color': '#9333ea'}"
+        ></p-button>
+    </div>
 </form>

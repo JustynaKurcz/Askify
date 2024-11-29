@@ -18,15 +18,14 @@
           </div>
         </div>
 
-          <div class="question-actions">
-            <p-button
-              *ngIf="question?.userId === currentUserId"
-              icon="pi pi-pencil"
-              styleClass="p-button-rounded p-button-text p-button-secondary"
-              pTooltip="Edytuj pytanie"
-            >
-            </p-button>
-          </div>
+        <div class="question-actions">
+          <p-button
+            *ngIf="question?.userId === currentUserId"
+            icon="pi pi-pencil"
+            styleClass="p-button-rounded p-button-text p-button-secondary"
+            pTooltip="Edytuj pytanie"
+          >
+          </p-button>
         </div>
       </div>
 
@@ -40,40 +39,89 @@
           </h4>
           <p-button
             label="Dodaj odpowiedź"
+            (onClick)="addAnswer()"
             icon="pi pi-plus"
             styleClass="p-button-outlined p-button-secondary"
           ></p-button>
+
+          <app-create-answer
+            [(visible)]="showAnswerForm"
+            (answerSubmitted)="handleAnswerSubmitted($event)"
+          ></app-create-answer>
         </div>
 
-        <div *ngIf="answers.length > 0; else noAnswers" class="answers-container">
-          <div *ngFor="let answer of answers" class="answer-wrapper">
-            <p-card styleClass="answer-card">
-              <div class="answer-content">
-                {{ answer.content }}
+        <div *ngFor="let answer of answers" class="answer-wrapper">
+          <p-card styleClass="answer-card">
+            <div *ngIf="!answer.isEditing; else editMode">
+              <div class="flex align-items-center justify-content-between">
+                <div class="answer-content">
+                  {{ answer.content }}
+                </div>
+                <div class="answer-meta">
+          <span class="answer-date">
+            <i class="pi pi-clock mr-1"></i>
+            {{ answer.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </span>
+                  <span class="answer-author">
+            <i class="pi pi-user mr-1"></i>
+            Autor: {{ answer.authorName || 'Ładowanie...' }}
+          </span>
+                </div>
+                <div class="action-buttons" *ngIf="answer.userId === currentUserId">
+                  <p-button
+                    icon="pi pi-pencil"
+                    (onClick)="startEditing(answer.answerId)"
+                    styleClass="p-button-rounded p-button-text p-button-secondary mr-2"
+                    pTooltip="Edytuj odpowiedź"
+                  ></p-button>
+                  <p-button
+                    icon="pi pi-trash"
+                    (onClick)="deleteAnswer(answer.answerId)"
+                    styleClass="p-button-rounded p-button-text p-button-secondary"
+                    pTooltip="Usuń odpowiedź"
+                  ></p-button>
+                </div>
               </div>
-              <div class="answer-meta">
-                   <span class="answer-date">
-                     <i class="pi pi-clock mr-1"></i>
-                      {{ answer.createdAt | date:'dd/MM/yyyy HH:mm' }}
-                   </span>
+            </div>
 
-                <span class="answer-author">
-                    <i class="pi pi-user mr-1"></i>
-                    Autor: {{ answer.authorName || 'Ładowanie...' }}
-                  </span>
+            <ng-template #editMode>
+              <div class="edit-mode-container">
+        <textarea
+          pInputTextarea
+          [(ngModel)]="answer.editContent"
+          [rows]="3"
+          class="w-full mb-2"
+          [autoResize]="true"
+        ></textarea>
+                <div class="flex justify-content-end gap-2">
+                  <p-button
+                    icon="pi pi-times"
+                    (onClick)="cancelEditing(answer)"
+                    styleClass="p-button-rounded p-button-text p-button-secondary"
+                    pTooltip="Anuluj"
+                  ></p-button>
+                  <p-button
+                    icon="pi pi-check"
+                    (onClick)="saveEdit(answer)"
+                    styleClass="p-button-rounded p-button-text p-button-success"
+                    [loading]="answer.isSaving"
+                    pTooltip="Zapisz"
+                  ></p-button>
+                </div>
               </div>
-            </p-card>
-          </div>
+            </ng-template>
+          </p-card>
         </div>
-
-        <ng-template #noAnswers>
-          <div class="no-answers">
-            <p>Brak odpowiedzi. Bądź pierwszy!</p>
-          </div>
-        </ng-template>
       </div>
     </div>
+  </div>
 </p-card>
+
+<ng-template #noAnswers>
+  <div class="no-answers">
+    <p>Brak odpowiedzi. Bądź pierwszy!</p>
+  </div>
+</ng-template>
 
 <ng-template #loadingTpl>
   <div class="flex flex-column gap-3">

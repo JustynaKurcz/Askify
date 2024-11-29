@@ -1,0 +1,47 @@
+:host ::ng-deep {
+  .answer-sidebar {
+    .p-sidebar-content {
+      padding: 0;
+    }
+  }
+
+  .p-sidebar-header {
+    padding: 1.5rem;
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .p-sidebar {
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .p-sidebar-mask {
+    display: none !important;
+  }
+
+  .answer-form {
+    padding: 1.5rem;
+  }
+
+  .form-field {
+    margin-bottom: 1.5rem;
+  }
+
+  .p-inputtextarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .error-message {
+    color: #dc2626;
+    min-height: 20px;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+}
