@@ -1,16 +1,56 @@
 using System.Net.Mail;
+using Microsoft.Extensions.Options;
 
 namespace Askify.Shared.Emails;
 
-public class EmailService(IConfiguration configuration) : IEmailService
+public sealed class EmailService(IOptions<EmailOptions> emailOptions) 
+    : IEmailService
 {
     private readonly string _emailTemplate = LoadEmailTemplate();
+    private readonly EmailOptions _emailOptions = emailOptions.Value;
+    private const string TemplateName = "PasswordReset.html";
 
+    public async Task SendPasswordResetEmailAsync(string email, string token, CancellationToken cancellationToken)
+    {
+        var message = CreatePasswordResetMessage(email, token);
+        await SendEmailAsync(message, cancellationToken);
+    }
+    
+    private MailMessage CreatePasswordResetMessage(string email, string token)
+    {
+        var resetLink = $"{_emailOptions.BaseUrl}/api/v1/users/reset-password/{Uri.EscapeDataString(token)}";
+        var emailBody = _emailTemplate.Replace("{{resetLink}}", resetLink);
+
+        return new MailMessage
+        {
+            From = new MailAddress(_emailOptions.Username),
+            Subject = "Reset hasła",
+            Body = emailBody,
+            IsBodyHtml = true,
+            To = { email }
+        };
+    }
+
+    private async Task SendEmailAsync(MailMessage message, CancellationToken cancellationToken)
+    {
+        using var client = CreateSmtpClient();
+        await client.SendMailAsync(message, cancellationToken);
+    }
+
+    private SmtpClient CreateSmtpClient()
+    {
+        return new SmtpClient(_emailOptions.SmtpHost, _emailOptions.SmtpPort)
+        {
+            Credentials = new NetworkCredential(_emailOptions.Username, _emailOptions.Password),
+            EnableSsl = true
+        };
+    }
+    
     private static string LoadEmailTemplate()
     {
         var assembly = Assembly.GetExecutingAssembly();
         var resourcePath = assembly.GetManifestResourceNames()
-                               .FirstOrDefault(x => x.EndsWith("PasswordReset.html"))
+                               .FirstOrDefault(x => x.EndsWith(TemplateName))
                            ?? throw new InvalidOperationException("Could not find email template.");
 
         using var stream = assembly.GetManifestResourceStream(resourcePath)
@@ -18,33 +58,5 @@ public class EmailService(IConfiguration configuration) : IEmailService
 
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
-    }
-
-    public async Task SendPasswordResetEmailAsync(string email, string token, CancellationToken cancellationToken)
-    {
-        var smtpServer = configuration["Email:SmtpHost"];
-        var smtpPort = int.Parse(configuration["Email:SmtpPort"] ?? string.Empty);
-        var smtpUsername = configuration["Email:Username"];
-        var smtpPassword = configuration["Email:Password"];
-
-        var baseUrl = configuration["BaseUrl"] ?? "http://localhost:5244";
-        var resetLink = $"{baseUrl}/api/v1/users/reset-password/{Uri.EscapeDataString(token)}";
-
-        var emailBody = _emailTemplate.Replace("{{resetLink}}", resetLink);
-
-        var message = new MailMessage
-        {
-            From = new MailAddress(smtpUsername!),
-            Subject = "Reset hasła",
-            Body = emailBody,
-            IsBodyHtml = true
-        };
-        message.To.Add(email);
-
-        using var client = new SmtpClient(smtpServer, smtpPort);
-        client.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-        client.EnableSsl = true;
-
-        await client.SendMailAsync(message, cancellationToken);
     }
 }
