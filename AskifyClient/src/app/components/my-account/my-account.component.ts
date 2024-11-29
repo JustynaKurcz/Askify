@@ -1,11 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {SkeletonModule} from 'primeng/skeleton';
 import {NgIf} from '@angular/common';
 import {CardModule} from 'primeng/card';
 import {TagModule} from 'primeng/tag';
 import {AuthService} from '../../services/auth.service';
 import {catchError, tap, throwError} from 'rxjs';
+import {Button} from 'primeng/button';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
+import {DockModule} from 'primeng/dock';
+import {Router} from '@angular/router';
 
 interface UserAccount {
   id: string;
@@ -22,9 +27,13 @@ interface UserAccount {
     SkeletonModule,
     NgIf,
     CardModule,
-    TagModule
+    TagModule,
+    Button,
+    ConfirmDialogModule,
+    ToastModule,
+    DockModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, ConfirmationService],
   templateUrl: './my-account.component.html',
   styleUrl: './my-account.component.css'
 })
@@ -32,7 +41,7 @@ export class MyAccountComponent implements OnInit {
   userAccount!: UserAccount;
   loading: boolean = true;
 
-  constructor(private messageService: MessageService,  private authService: AuthService) {}
+  constructor(private messageService: MessageService,  private authService: AuthService, private confirmationService: ConfirmationService, private router: Router) {}
 
   ngOnInit() {
     this.loading = true;
@@ -57,5 +66,37 @@ export class MyAccountComponent implements OnInit {
 
   formatDate(date: string): string {
     return new Date(date).toLocaleDateString();
+  }
+
+  confirmDelete() {
+    this.confirmationService.confirm({
+      message: 'Czy na pewno chcesz usunąć swoje konto? Tej operacji nie można cofnąć.',
+      accept: () => {
+        this.loading = true;
+        this.authService.deleteAccount()
+          .pipe(
+            tap(() => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sukces',
+                detail: 'Konto zostało pomyślnie usunięte'
+              });
+              this.authService.signOut().then(() => {
+                this.router.navigate(['/']);
+              });
+            }),
+            catchError((error) => {
+              this.loading = false;
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Błąd',
+                detail: 'Nie udało się usunąć konta'
+              });
+              return throwError(() => error);
+            })
+          )
+          .subscribe();
+      }
+    });
   }
 }

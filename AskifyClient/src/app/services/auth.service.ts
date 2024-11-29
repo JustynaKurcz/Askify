@@ -75,4 +75,9 @@ export class AuthService {
   getUserName(userId: string): Observable<any> {
     return this.http.get<any>(API_CONSTANTS.USERS.BASE_PATH + `/${userId}/name`);
   }
+
+  deleteAccount(): Observable<any> {
+    return this.http.delete(API_CONSTANTS.USERS.BASE_PATH);
+  }
+
 }
