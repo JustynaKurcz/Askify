@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   currentLoggedUser(): Observable<any> {
-    return this.http.get<any>(API_CONSTANTS.USERS.BASE_PATH)
+    return this.http.get<any>(API_CONSTANTS.USERS.CURRENT_USER)
       .pipe(
         tap((result: any) => {
           localStorage.setItem('userId', result.id);

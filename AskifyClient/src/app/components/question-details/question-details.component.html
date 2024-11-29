@@ -40,9 +40,15 @@
           </h4>
           <p-button
             label="Dodaj odpowiedź"
+            (onClick)="addAnswer()"
             icon="pi pi-plus"
             styleClass="p-button-outlined p-button-secondary"
           ></p-button>
+
+          <app-create-answer
+            [(visible)]="showAnswerForm"
+            (answerSubmitted)="handleAnswerSubmitted($event)"
+          ></app-create-answer>
         </div>
 
         <div *ngIf="answers.length > 0; else noAnswers" class="answers-container">

@@ -1,11 +1,12 @@
-import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {DynamicDialogRef} from 'primeng/dynamicdialog';
-import {InputTextModule} from 'primeng/inputtext';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {Button} from 'primeng/button';
-import {NgIf} from '@angular/common';
-import {CreateQuestion, QuestionService} from '../../services/question.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { Button } from 'primeng/button';
+import { NgIf } from '@angular/common';
+import {CreateQuestion, QuestionService, Tag} from '../../services/question.service';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-create-question',
@@ -15,36 +16,57 @@ import {CreateQuestion, QuestionService} from '../../services/question.service';
     InputTextModule,
     InputTextareaModule,
     Button,
-    NgIf
+    NgIf,
+    DropdownModule
   ],
   templateUrl: './create-question.component.html',
   styleUrl: './create-question.component.css'
 })
-export class CreateQuestionComponent {
+export class CreateQuestionComponent implements OnInit {
   questionForm: FormGroup;
   submitting = false;
+  tags: Tag[] = [];
 
   constructor(
-    private fb: FormBuilder,
-    private ref: DynamicDialogRef,
-    private questionService: QuestionService
+      private fb: FormBuilder,
+      private ref: DynamicDialogRef,
+      private questionService: QuestionService
   ) {
     this.questionForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(250)]],
-      content: ['', [Validators.required, Validators.maxLength(5000)]]
+      content: ['', [Validators.required, Validators.maxLength(5000)]],
+      tagId: [null, Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    this.loadTags();
+  }
+
+  loadTags() {
+    this.questionService.getTags().subscribe({
+      next: (tags) => {
+        this.tags = tags;
+      },
+      error: (error) => {
+        console.error('Error loading tags:', error);
+      }
     });
   }
 
   onSubmit() {
     if (this.questionForm.valid) {
       const newQuestion = this.questionForm.value;
+      this.submitting = true;
       this.questionService.createQuestion(newQuestion as CreateQuestion)
-        .subscribe({
-          next: () => {
-            this.ref.close(newQuestion);
-            this.submitting = true;
-          }
-        });
+          .subscribe({
+            next: () => {
+              this.ref.close(newQuestion);
+            },
+            error: () => {
+              this.submitting = false;
+            }
+          });
     }
   }
 

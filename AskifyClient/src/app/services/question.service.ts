@@ -36,6 +36,16 @@ interface QueryParams {
   search?: string;
 }
 
+export type Tag = {
+  id: number;
+  name: string;
+  displayName: string;
+}
+
+export type CreateAnswer = {
+  content: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -69,5 +79,13 @@ export class QuestionService {
 
   createQuestion(createQuestion: CreateQuestion) : Observable<any> {
     return this.http.post<any>(API_CONSTANTS.QUESTION.BASE_PATH, createQuestion);
+  }
+
+  getTags(): Observable<Tag[]> {
+    return this.http.get<Tag[]>(API_CONSTANTS.QUESTION.TAGS);
+  }
+
+  createAnswer(questionId : string, createAnswer: CreateAnswer): Observable<any> {
+    return this.http.post<any>(API_CONSTANTS.QUESTION.BASE_PATH + `/${questionId}/answers` , createAnswer);
   }
 }

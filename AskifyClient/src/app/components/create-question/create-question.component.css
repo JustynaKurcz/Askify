@@ -82,3 +82,38 @@
     }
   }
 }
+
+
+:host ::ng-deep {
+  .p-dropdown {
+    width: 100%;
+
+    &.ng-invalid.ng-touched {
+      border-color: #dc2626;
+    }
+
+    &:not(.p-disabled):hover {
+      border-color: #d8b4fe;
+    }
+
+    &:not(.p-disabled).p-focus {
+      border-color: #9333ea;
+      box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+    }
+  }
+
+  .p-dropdown-panel {
+    .p-dropdown-items {
+      .p-dropdown-item {
+        &.p-highlight {
+          background: rgba(147, 51, 234, 0.1);
+          color: #9333ea;
+        }
+
+        &:hover {
+          background: rgba(147, 51, 234, 0.05);
+        }
+      }
+    }
+  }
+}
