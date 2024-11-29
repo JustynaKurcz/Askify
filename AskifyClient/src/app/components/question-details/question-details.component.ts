@@ -8,9 +8,14 @@ import {Button} from 'primeng/button';
 import {MenuModule} from 'primeng/menu';
 import {AuthService} from '../../services/auth.service';
 import {CreateAnswerComponent} from '../create-answer/create-answer.component';
+import {PaginatorModule} from 'primeng/paginator';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 interface AnswerWithAuthor extends Answer {
   authorName?: string;
+  isEditing?: boolean;
+  editContent?: string;
+  isSaving?: boolean;
 }
 
 @Component({
@@ -25,7 +30,9 @@ interface AnswerWithAuthor extends Answer {
     NgForOf,
     Button,
     MenuModule,
-    CreateAnswerComponent
+    CreateAnswerComponent,
+    PaginatorModule,
+    InputTextareaModule
   ],
   templateUrl: './question-details.component.html',
   styleUrl: './question-details.component.css'
@@ -38,7 +45,8 @@ export class QuestionDetailsComponent implements OnChanges {
   authorQuestion: string = '';
   showAnswerForm: boolean = false;
 
-  constructor(private questionService: QuestionService, private authService : AuthService) {}
+  constructor(private questionService: QuestionService, private authService: AuthService) {
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['question'] && changes['question'].currentValue) {
@@ -116,6 +124,41 @@ export class QuestionDetailsComponent implements OnChanges {
         console.error('Błąd podczas usuwania odpowiedzi');
       }
     });
+  }
 
+  startEditing(answerId: string) {
+    const answer = this.answers.find(a => a.answerId === answerId);
+    if (answer) {
+      answer.isEditing = true;
+      answer.editContent = answer.content;
+      answer.isSaving = false;
+    }
+  }
+
+  cancelEditing(answer: AnswerWithAuthor) {
+    answer.isEditing = false;
+    answer.editContent = undefined;
+  }
+
+  saveEdit(answer: AnswerWithAuthor) {
+    if (!answer.editContent?.trim()) {
+      return;
+    }
+
+    answer.isSaving = true;
+    const updateData = {
+      content: answer.editContent.trim()
+    };
+
+    this.questionService.updateAnswer(this.question?.questionId!, answer.answerId, updateData).subscribe({
+      next: () => {
+        answer.content = answer.editContent!;
+        answer.isEditing = false;
+        answer.isSaving = false;
+      },
+      error: () => {
+        answer.isSaving = false;
+      }
+    });
   }
 }
