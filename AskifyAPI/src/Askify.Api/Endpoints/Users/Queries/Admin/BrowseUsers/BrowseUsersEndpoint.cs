@@ -1,9 +1,9 @@
 using Askify.Application.Users.Queries.BrowseUsers;
 using Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 
-namespace Askify.Api.Endpoints.Users.Queries.BrowseUsersForAdmin;
+namespace Askify.Api.Endpoints.Users.Queries.Admin.BrowseUsers;
 
-internal sealed class BrowseUsersForAdminEndpoint : IEndpointDefinition
+internal sealed class BrowseUsersEndpoint : IEndpointDefinition
 {
     public void DefineEndpoints(IEndpointRouteBuilder endpoints)
     {
@@ -17,7 +17,7 @@ internal sealed class BrowseUsersForAdminEndpoint : IEndpointDefinition
             })
             .WithOpenApi(operation => new OpenApiOperation(operation)
             {
-                Summary = "Browse users",
+                Summary = "Browse users for admin",
                 Description = "This endpoint allows you to browse users.",
             })
             .WithTags(UserEndpoints.Users)

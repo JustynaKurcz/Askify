@@ -17,6 +17,7 @@ internal sealed class BrowseQuestionsQueryHandler(
         questions = Search(query, questions);
         
         return await questions
+            .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.AsDto())
             .PaginateAsync(query.GetPageNumber(), query.GetPageSize(), cancellationToken);
     }
