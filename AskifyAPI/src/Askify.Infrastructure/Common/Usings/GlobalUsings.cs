@@ -3,3 +3,7 @@ global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Runtime.CompilerServices;
 global using Microsoft.Extensions.Configuration;
+global using Askify.Infrastructure.EF.DbContext;
+global using System.Linq.Expressions;
+global using Askify.Shared.Pagination;
+global using MediatR;

@@ -1,4 +1,4 @@
-using Askify.Application.Users.Queries.DTO;
+using Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 using Askify.Core.Users.Entities;
 
 namespace Askify.Infrastructure.EF.Users.Queries;

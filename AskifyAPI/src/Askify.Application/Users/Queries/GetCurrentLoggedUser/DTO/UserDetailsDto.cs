@@ -1,4 +1,4 @@
-namespace Askify.Application.Users.Queries.DTO;
+namespace Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 
 public record UserDetailsDto(
     Guid Id,

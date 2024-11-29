@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Askify.Application.Answers.CreateAnswer;
+namespace Askify.Application.Answers.Command.CreateAnswer;
 
 internal sealed class CreateAnswerCommandValidator : AbstractValidator<CreateAnswerCommand>
 {

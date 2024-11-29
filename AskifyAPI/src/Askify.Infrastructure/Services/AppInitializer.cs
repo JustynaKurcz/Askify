@@ -1,4 +1,3 @@
-using Askify.Infrastructure.EF.DbContext;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

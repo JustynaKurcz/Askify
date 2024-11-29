@@ -1,9 +1,8 @@
-using Askify.Application.Users.Queries.DTO;
 using Askify.Application.Users.Queries.GetCurrentLoggedUser;
+using Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth.Context;
-using MediatR;
 
 namespace Askify.Infrastructure.EF.Users.Queries.GetCurrentLoggedUser;
 

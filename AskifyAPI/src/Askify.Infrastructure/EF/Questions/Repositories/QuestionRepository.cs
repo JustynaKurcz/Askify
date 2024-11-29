@@ -1,7 +1,5 @@
-using System.Linq.Expressions;
 using Askify.Core.Questions.Entities;
 using Askify.Core.Questions.Repositories;
-using Askify.Infrastructure.EF.DbContext;
 
 namespace Askify.Infrastructure.EF.Questions.Repositories;
 

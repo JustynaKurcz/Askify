@@ -2,7 +2,6 @@ using Askify.Core.Questions.Entities;
 using Askify.Core.Questions.Exceptions;
 using Askify.Core.Questions.Repositories;
 using Askify.Shared.Auth.Context;
-using MediatR;
 
 namespace Askify.Application.Questions.Commands.DeleteQuestion;
 

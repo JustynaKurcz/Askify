@@ -2,7 +2,6 @@ using Askify.Application.Users.Queries.GetUserName;
 using Askify.Core.Users.Exceptions;
 using Askify.Core.Users.Repositories;
 using Askify.Shared.Auth.Context;
-using MediatR;
 
 namespace Askify.Infrastructure.EF.Users.Queries.GetUserName;
 

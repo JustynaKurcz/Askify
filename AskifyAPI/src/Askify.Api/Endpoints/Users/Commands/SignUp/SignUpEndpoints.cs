@@ -1,6 +1,4 @@
 using Askify.Application.Users.Commands.SignUp;
-using Askify.Shared.Endpoints;
-using MediatR;
 
 namespace Askify.Api.Endpoints.Users.Commands.SignUp;
 

@@ -2,7 +2,6 @@ using Askify.Application.Questions.Queries.GetQuestion;
 using Askify.Application.Questions.Queries.GetQuestion.DTO;
 using Askify.Core.Questions.Exceptions;
 using Askify.Core.Questions.Repositories;
-using MediatR;
 
 namespace Askify.Infrastructure.EF.Questions.Queries.GetQuestion;
 

@@ -1,5 +1,4 @@
 using Askify.Application.Answers.Queries.GetAnswersForQuestion.DTO;
-using MediatR;
 
 namespace Askify.Application.Answers.Queries.GetAnswersForQuestion;
 

@@ -1,7 +1,5 @@
 using Askify.Api.Endpoints.Questions;
-using Askify.Application.Answers.CreateAnswer;
-using Askify.Shared.Endpoints;
-using MediatR;
+using Askify.Application.Answers.Command.CreateAnswer;
 
 namespace Askify.Api.Endpoints.Answers.Commands.CreateAnswer;
 
@@ -19,7 +17,6 @@ internal sealed class CreateAnswerEndpoint : IEndpointDefinition
 
                 return Results.Created(QuestionEndpoints.BasePath, response);
             })
-            .RequireAuthorization()
             .WithOpenApi(options => new OpenApiOperation(options)
             {
                 Summary = "Create answer",
@@ -27,6 +24,8 @@ internal sealed class CreateAnswerEndpoint : IEndpointDefinition
             })
             .WithTags(AnswerEndpoints.Answers)
             .Produces<CreateAnswerResponse>(StatusCodes.Status201Created)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
     }
 }

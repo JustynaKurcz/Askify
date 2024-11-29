@@ -1,4 +1,4 @@
-using Askify.Application.Answers.DeleteAnswer;
+using Askify.Application.Answers.Command.DeleteAnswer;
 
 namespace Askify.Api.Endpoints.Answers.Commands.DeleteAnswer;
 

@@ -1,8 +1,4 @@
 using Askify.Application.Questions.Commands.DeleteQuestion;
-using Askify.Shared.Auth.Policies;
-using Askify.Shared.Endpoints;
-using Askify.Shared.Results;
-using MediatR;
 
 namespace Askify.Api.Endpoints.Questions.Commands.DeleteQuestion;
 
@@ -21,7 +17,6 @@ internal sealed class DeleteQuestionEndpoint : IEndpointDefinition
 
                 return Results.NoContent();
             })
-            .RequireAuthorization(AuthorizationPolicies.UserPolicy)
             .WithOpenApi(option => new OpenApiOperation(option)
             {
                 Summary = "Delete a question",
@@ -29,6 +24,8 @@ internal sealed class DeleteQuestionEndpoint : IEndpointDefinition
             })
             .WithTags(QuestionEndpoints.Questions)
             .Produces(StatusCodes.Status204NoContent)
-            .Produces<Error>(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
     }
 }

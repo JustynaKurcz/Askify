@@ -1,5 +1,4 @@
-using Askify.Application.Users.Queries.DTO;
-using MediatR;
+using Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 
 namespace Askify.Application.Users.Queries.GetCurrentLoggedUser;
 

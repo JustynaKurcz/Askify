@@ -1,5 +1,3 @@
-using Askify.Shared.Results;
-
 namespace Askify.Shared.Auth.Middlewares;
 
 public class TokenExpirationMiddleware(RequestDelegate next)
@@ -26,22 +24,34 @@ public class TokenExpirationMiddleware(RequestDelegate next)
 
                     if (expirationDate < DateTime.UtcNow)
                     {
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        var error = new Error("TokenExpired", "Token has expired");
-                        await context.Response.WriteAsJsonAsync(error);
-                        return;
+                        throw new TokenExpiredException("Token has expired");
                     }
                 }
             }
+            catch (TokenExpiredException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                var error = new Error("InvalidToken", $"Invalid token: {ex.Message}");
-                await context.Response.WriteAsJsonAsync(error);
-                return;
+                throw new InvalidTokenException($"Invalid token: {ex.Message}");
             }
         }
 
         await next(context);
+    }
+}
+
+public class TokenExpiredException : Exception
+{
+    public TokenExpiredException(string message) : base(message)
+    {
+    }
+}
+
+public class InvalidTokenException : Exception
+{
+    public InvalidTokenException(string message) : base(message)
+    {
     }
 }

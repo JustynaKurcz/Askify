@@ -1,6 +1,4 @@
 using Askify.Application.Users.Queries.GetUserName;
-using Askify.Shared.Endpoints;
-using MediatR;
 
 namespace Askify.Api.Endpoints.Users.Queries.GetUserName;
 
