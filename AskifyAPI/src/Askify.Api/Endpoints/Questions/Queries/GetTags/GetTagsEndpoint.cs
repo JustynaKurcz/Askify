@@ -1,5 +1,6 @@
 using Askify.Core.Questions.Enums;
-using Microsoft.OpenApi.Attributes;
+using Askify.Shared;
+using Humanizer;
 
 namespace Askify.Api.Endpoints.Questions.Queries.GetTags;
 
@@ -12,13 +13,9 @@ internal sealed class GetTagsEndpoint : IEndpointDefinition
                 var tagValues = Enum.GetValues(typeof(Tag))
                     .Cast<Tag>()
                     .Select(tag => new TagResponse(
-                        (int)tag,
-                        tag.ToString(),
-                        tag.GetType()
-                            .GetMember(tag.ToString())
-                            .First()
-                            .GetCustomAttribute<DisplayAttribute>()
-                            ?.Name ?? tag.ToString()
+                        Id: (int)tag,
+                        Name: tag.ToString(),
+                        DisplayName: tag.Humanize()
                     ))
                     .ToList();
 
@@ -31,7 +28,6 @@ internal sealed class GetTagsEndpoint : IEndpointDefinition
             })
             .WithTags(QuestionEndpoints.Questions)
             .Produces<List<TagResponse>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
+            .Produces(StatusCodes.Status401Unauthorized);
     }
 }

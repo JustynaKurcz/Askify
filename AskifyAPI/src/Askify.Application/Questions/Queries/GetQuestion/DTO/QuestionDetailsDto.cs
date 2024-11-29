@@ -5,5 +5,6 @@ public record QuestionDetailsDto(
     string Title,
     string Content,
     Guid UserId,
-    DateTimeOffset CreatedAt
+    DateTimeOffset CreatedAt,
+    string Tag
 );

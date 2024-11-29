@@ -7,6 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="Emails/Templates/PasswordReset.html"/>
+        <EmbeddedResource Include="Emails/Templates/ResetPasswordForm.html"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.10.0"/>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0"/>
         <PackageReference Include="MediatR" Version="12.4.1"/>

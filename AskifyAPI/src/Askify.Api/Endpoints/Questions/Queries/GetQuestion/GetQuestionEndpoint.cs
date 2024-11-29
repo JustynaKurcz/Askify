@@ -1,5 +1,5 @@
-using Askify.Application.Questions.Queries.BrowseQuestions.DTO;
 using Askify.Application.Questions.Queries.GetQuestion;
+using Askify.Application.Questions.Queries.GetQuestion.DTO;
 
 namespace Askify.Api.Endpoints.Questions.Queries.GetQuestion;
 
@@ -22,7 +22,7 @@ internal sealed class GetQuestionEndpoint : IEndpointDefinition
                 Description = "This endpoint allows users to get a question by its identifier."
             })
             .WithTags(QuestionEndpoints.Questions)
-            .Produces<QuestionDto>(StatusCodes.Status200OK)
+            .Produces<QuestionDetailsDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
     }
 }

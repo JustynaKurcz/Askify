@@ -19,4 +19,7 @@ public class User
     }
 
     public static User Create() => new();
+
+    public void ChangePassword(string hashedPassword)
+        => Password = hashedPassword;
 }

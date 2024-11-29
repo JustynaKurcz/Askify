@@ -31,4 +31,10 @@ public class UserBuilder
         _user.Role = role;
         return this;
     }
+    
+    public UserBuilder WithUpdatedAt(DateTimeOffset? updatedAt)
+    {
+        _user.UpdatedAt = updatedAt;
+        return this;
+    }
 }

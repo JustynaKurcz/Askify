@@ -1,5 +1,6 @@
 using Askify.Application.Questions.Queries.BrowseQuestions;
 using Askify.Application.Questions.Queries.BrowseQuestions.DTO;
+using Microsoft.AspNetCore.Html;
 
 namespace Askify.Api.Endpoints.Questions.Queries.BrowseQuestions;
 
@@ -22,6 +23,7 @@ internal sealed class BrowseQuestionsEndpoint : IEndpointDefinition
             })
             .WithTags(QuestionEndpoints.Questions)
             .Produces<PagedResponse<QuestionDto>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .RequireAuthorization(AuthorizationPolicies.UserPolicy);
     }
 }

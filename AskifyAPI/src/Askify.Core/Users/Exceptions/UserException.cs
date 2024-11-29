@@ -28,4 +28,12 @@ public sealed class UserException
         {
         }
     }
+
+    public sealed class InvalidPasswordResetTokenException : AskifyException
+    {
+        public InvalidPasswordResetTokenException() : base($"The password reset token is invalid.")
+        {
+        }
+    }
+    
 }
