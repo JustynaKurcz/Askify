@@ -1,0 +1,84 @@
+.question-form {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-field {
+  margin-bottom: 2rem;
+}
+
+.error-message {
+  color: #dc2626;
+  min-height: 20px;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.character-count {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+:host ::ng-deep {
+  .p-inputtext {
+    border: 1px solid #e9d5ff;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+
+    &:hover {
+      border-color: #d8b4fe;
+    }
+
+    &:focus {
+      border-color: #9333ea;
+      box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: #dc2626;
+    }
+  }
+
+  .p-input-icon-left {
+    display: block;
+    margin-bottom: 0.25rem;
+
+    i {
+      color: #9333ea;
+      font-size: 1.1rem;
+    }
+  }
+
+  textarea.p-inputtextarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+
+  .p-button {
+    min-width: 120px;
+
+    &.cancel-button {
+      color: #4b5563;
+    }
+
+    &.submit-button {
+      font-weight: 500;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}

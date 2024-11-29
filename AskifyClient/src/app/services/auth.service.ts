@@ -1,4 +1,4 @@
-import {BehaviorSubject, map, Observable, tap} from 'rxjs';
+import {BehaviorSubject, map, Observable, of, switchMap, tap} from 'rxjs';
 import {API_CONSTANTS} from '../constants/api';
 import {SignUp} from './types/signUp';
 import {SignInResponse} from './types/signInResponse';
@@ -7,15 +7,6 @@ import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {JwtHelperService} from '@auth0/angular-jwt';
-
-
-export type User = {
-  id: string;
-  email: string;
-  userName: string;
-  createdAt: Date;
-  role: string;
-}
 
 
 @Injectable({
@@ -32,13 +23,15 @@ export class AuthService {
     return this.http
       .post<SignInResponse>(API_CONSTANTS.USERS.SIGN_IN, signInData)
       .pipe(
-        map((result: SignInResponse) => {
+        switchMap((result: SignInResponse) => {
           if (result?.token) {
             this.localStorage?.setItem('token', result.token);
             this.isAuthenticatedSubject.next(true);
-            return true;
+            return this.currentLoggedUser().pipe(
+              map(() => true)
+            );
           }
-          return false;
+          return of(false);
         })
       );
   }
@@ -47,26 +40,18 @@ export class AuthService {
     return this.http.post(API_CONSTANTS.USERS.SIGN_UP, signUpData);
   }
 
+  currentLoggedUser(): Observable<any> {
+    return this.http.get<any>(API_CONSTANTS.USERS.BASE_PATH)
+      .pipe(
+        tap((result: any) => {
+          localStorage.setItem('userId', result.id);
+        })
+      );
+  }
+
   async signOut() {
     this.localStorage?.removeItem('token');
     this.isAuthenticatedSubject.next(false);
-  }
-
-  getCurrentUser() {
-    return this.http.get<User>(API_CONSTANTS.USERS.BASE_PATH).pipe(
-      tap(user => {
-        localStorage.setItem('userId', user.id);
-        localStorage.setItem('userName', user.userName);
-      })
-    );
-  }
-
-  getCurrentUserId(): string | null {
-    return localStorage.getItem('userId');
-  }
-
-  getCurrentUserName(): string | null {
-    return localStorage.getItem('userName');
   }
 
   isLoggedIn() {
@@ -75,6 +60,7 @@ export class AuthService {
     const token = localStorage?.getItem('token');
     if (!token) {
       this.isAuthenticatedSubject.next(false);
+      localStorage?.removeItem('token');
       return false;
     }
     const isExpired = !jwtHelper.isTokenExpired(token);
@@ -86,7 +72,7 @@ export class AuthService {
     return this.isAuthenticatedSubject.asObservable();
   }
 
-  getUserName(userId: string) : Observable<any> {
+  getUserName(userId: string): Observable<any> {
     return this.http.get<any>(API_CONSTANTS.USERS.BASE_PATH + `/${userId}/name`);
   }
 }
