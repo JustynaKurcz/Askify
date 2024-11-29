@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {API_CONSTANTS} from '../constants/api';
 
@@ -10,6 +10,14 @@ export interface Question {
   userId: string;
 }
 
+export type PaginationQuestion = {
+  items: Question[];
+  totalItems: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+
+}
 export interface Answer {
   questionId: string;
   content: string;
@@ -22,6 +30,12 @@ export type CreateQuestion = {
   content: string;
 }
 
+interface QueryParams {
+  pageNumber?: number;
+  pageSize?: number;
+  search?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,8 +43,23 @@ export class QuestionService {
 
   constructor(private http: HttpClient) {}
 
-  getQuestions(): Observable<Question[]> {
-    return this.http.get<Question[]>(API_CONSTANTS.QUESTION.BROWSE);
+  getQuestions(params: QueryParams = {}): Observable<PaginationQuestion> {
+    let httpParams = new HttpParams();
+
+    if (params.pageNumber) {
+      httpParams = httpParams.set('pageNumber', params.pageNumber.toString());
+    }
+    if (params.pageSize) {
+      httpParams = httpParams.set('pageSize', params.pageSize.toString());
+    }
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+
+    return this.http.get<PaginationQuestion>(
+      API_CONSTANTS.QUESTION.BASE_PATH,
+      { params: httpParams }
+    );
   }
 
 

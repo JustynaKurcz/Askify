@@ -1,15 +1,22 @@
-<p-card styleClass="question-details-card">
-  <div class="flex flex-column gap-4">
+<p-card>
+  <div class="flex flex-column gap-6">
     <div *ngIf="!loading; else loadingTpl">
       <div class="question-container">
         <div class="question-header">
           <div class="question-title-section">
             <h3 class="title">{{ question?.title }}</h3>
-            <div class="date-badge">
-              <i class="pi pi-calendar mr-2"></i>
-              {{ question?.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            <div class="metadata">
+              <div class="date-badge">
+                <i class="pi pi-calendar"></i>
+                {{ question?.createdAt | date:'dd/MM/yyyy HH:mm' }}
+              </div>
+              <div class="author-badge">
+                <i class="pi pi-user"></i>
+                {{ authorQuestion || 'Anonim' }}
+              </div>
             </div>
           </div>
+        </div>
 
           <div class="question-actions">
             <p-button
@@ -66,7 +73,6 @@
         </ng-template>
       </div>
     </div>
-  </div>
 </p-card>
 
 <ng-template #loadingTpl>

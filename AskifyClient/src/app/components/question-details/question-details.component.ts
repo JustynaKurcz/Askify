@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {SkeletonModule} from 'primeng/skeleton';
 import {CardModule} from 'primeng/card';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
@@ -28,24 +28,32 @@ interface AnswerWithAuthor extends Answer {
   templateUrl: './question-details.component.html',
   styleUrl: './question-details.component.css'
 })
-export class QuestionDetailsComponent implements OnInit, OnChanges {
+export class QuestionDetailsComponent implements OnChanges {
   @Input() question: Question | null = null;
   answers: AnswerWithAuthor[] = [];
   loading = false;
   currentUserId = localStorage.getItem('userId');
-
+  authorQuestion: string = '';
   constructor(private questionService: QuestionService, private authService : AuthService) {}
 
-  ngOnInit() {
-    if (this.question) {
-      this.loadAnswers();
-    }
-  }
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['question'] && changes['question'].currentValue) {
       this.loadAnswers();
+      this.loadAuthorQuestion();
     }
+  }
+
+  loadAuthorQuestion() {
+    this.authService.getUserName(this.question?.userId!).subscribe({
+      next: (userName) => {
+        this.authorQuestion = userName;
+      },
+      error: () => {
+        this.authorQuestion = 'Nieznany użytkownik';
+      }
+    });
   }
 
   loadAnswers() {

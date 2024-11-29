@@ -6,16 +6,16 @@
       </div>
 
       <div class="search-container">
-        <span class="p-input-icon-left search-section">
-          <i class="pi pi-search"></i>
-          <input
-            pInputText
-            type="text"
-            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-            placeholder="Wyszukaj pytanie..."
-            class="p-inputtext-sm"
-          />
-        </span>
+  <span class="p-input-icon-left search-section">
+    <i class="pi pi-search"></i>
+    <input
+      pInputText
+      type="text"
+      (input)="onSearch($event)"
+      placeholder="Wyszukaj pytanie..."
+      class="p-inputtext-sm"
+    />
+  </span>
       </div>
     </div>
     <p-divider></p-divider>
@@ -44,16 +44,19 @@
     <p-table
       #dt
       [value]="questions"
-      [rows]="10"
+      [rows]="pageSize"
       [paginator]="true"
-      [globalFilterFields]="['title']"
+      [rowsPerPageOptions]="pageSizeOptions"
+      [totalRecords]="totalRecords"
       [rowHover]="true"
-      styleClass="p-datatable-sm p-datatable-gridlines"
       [loading]="loading"
+      styleClass="p-datatable-sm p-datatable-gridlines"
       dataKey="questionId"
       [showCurrentPageReport]="true"
+      [lazy]="true"
       currentPageReportTemplate="Pokazano {first} do {last} z {totalRecords} pytań"
       [tableStyle]="{ 'min-width': '50rem' }"
+      (onPage)="onPageChange($event)"
     >
       <ng-template pTemplate="header">
         <tr>
