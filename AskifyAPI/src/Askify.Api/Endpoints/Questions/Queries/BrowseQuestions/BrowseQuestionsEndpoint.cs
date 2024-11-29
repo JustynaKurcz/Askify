@@ -14,7 +14,7 @@ internal sealed class BrowseQuestionsEndpoint : IEndpointDefinition
                 CancellationToken cancellationToken) =>
             {
                 var response = await mediator.Send(query, cancellationToken);
-                return Results.Ok();
+                return Results.Ok(response);
             })
             .WithOpenApi(operation => new OpenApiOperation(operation)
             {

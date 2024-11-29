@@ -4,5 +4,6 @@ public record QuestionDto(
     Guid QuestionId,
     string Title,
     DateTimeOffset CreatedAt,
-    Guid UserId
+    Guid UserId,
+    string Tag
 );
