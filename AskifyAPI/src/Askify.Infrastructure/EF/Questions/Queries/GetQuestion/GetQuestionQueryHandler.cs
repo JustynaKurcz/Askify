@@ -11,10 +11,8 @@ internal sealed class GetQuestionQueryHandler(IQuestionRepository questionReposi
     public async Task<QuestionDetailsDto> Handle(GetQuestionQuery query,
         CancellationToken cancellationToken)
     {
-        var question = await questionRepository.GetAsync(query.QuestionId, true, cancellationToken);
-
-        if (question is null)
-            throw new QuestionException.QuestionNotFoundException(query.QuestionId);
+        var question = await questionRepository.GetAsync(query.QuestionId, true, cancellationToken)
+                       ?? throw new QuestionException.QuestionNotFoundException(query.QuestionId);
 
         return question.AsDetailsDto();
     }

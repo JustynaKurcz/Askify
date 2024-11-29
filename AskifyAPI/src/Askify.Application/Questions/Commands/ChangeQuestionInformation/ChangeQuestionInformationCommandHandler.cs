@@ -13,10 +13,8 @@ internal sealed class ChangeQuestionInformationCommandHandler(
     public async Task Handle(ChangeQuestionInformationCommand command,
         CancellationToken cancellationToken)
     {
-        var question = await questionRepository.GetAsync(command.QuestionId, false, cancellationToken);
-
-        if (question is null)
-            throw new QuestionException.QuestionNotFoundException(command.QuestionId);
+        var question = await questionRepository.GetAsync(command.QuestionId, false, cancellationToken)
+                       ?? throw new QuestionException.QuestionNotFoundException(command.QuestionId);
 
         var userId = context.Identity.Id;
 

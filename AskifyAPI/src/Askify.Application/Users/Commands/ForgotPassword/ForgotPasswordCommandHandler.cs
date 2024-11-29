@@ -14,12 +14,11 @@ internal sealed class ForgotPasswordCommandHandler(
     public async Task Handle(ForgotPasswordCommand command, CancellationToken cancellationToken)
     {
         var email = command.Email.ToLowerInvariant();
-        var user = await userRepository.GetByEmailAsync(email, cancellationToken);
-        if (user is null)
-            throw new UserException.UserNotFoundException(email);
+        var user = await userRepository.GetByEmailAsync(email, cancellationToken)
+                   ?? throw new UserException.UserNotFoundException(email);
 
         var resetToken = authManager.GeneratePasswordResetToken(user.Email);
-        
+
         await emailService.SendPasswordResetEmailAsync(user.Email, resetToken, cancellationToken);
     }
 }

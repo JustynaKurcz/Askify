@@ -14,10 +14,8 @@ internal sealed class DeleteQuestionCommandHandler(
         CancellationToken cancellationToken)
     {
         var question = await questionRepository
-            .GetAsync(command.QuestionId, false, cancellationToken);
-
-        if (question is null)
-            throw new QuestionException.QuestionNotFoundException(command.QuestionId);
+                           .GetAsync(command.QuestionId, false, cancellationToken)
+                       ?? throw new QuestionException.QuestionNotFoundException(command.QuestionId);
 
         var userId = context.Identity.Id;
 

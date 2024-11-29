@@ -10,25 +10,21 @@ internal sealed class ChangeAnswerInformationCommandHandler(
     IAnswerRepository answerRepository,
     IQuestionRepository questionRepository,
     IContext context
-    ) : IRequestHandler<ChangeAnswerInformationCommand>
+) : IRequestHandler<ChangeAnswerInformationCommand>
 {
     public async Task Handle(ChangeAnswerInformationCommand command, CancellationToken cancellationToken)
     {
-        var question = await questionRepository.GetAsync(command.QuestionId, false, cancellationToken);
+        var question = await questionRepository.GetAsync(command.QuestionId, false, cancellationToken)
+                       ?? throw new QuestionException.QuestionNotFoundException(command.QuestionId);
 
-        if (question is null)
-            throw new QuestionException.QuestionNotFoundException(command.QuestionId);
-        
-        var answer = await answerRepository.GetAsync(command.AnswerId, false, cancellationToken);
-        
-        if (answer is null)
-            throw new AnswerException.AnswerNotFoundException(command.AnswerId);
-        
+        var answer = await answerRepository.GetAsync(command.AnswerId, false, cancellationToken)
+                     ?? throw new AnswerException.AnswerNotFoundException(command.AnswerId);
+
         var userId = context.Identity.Id;
-        
+
         if (answer.UserId != userId)
             throw new AnswerException.AnswerNotBelongToUser();
-        
+
         answer.ChangeInformation(command.Content);
         await answerRepository.SaveChangesAsync(cancellationToken);
     }

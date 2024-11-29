@@ -17,13 +17,13 @@ internal sealed class AnswerRepository(AskifyDbContext dbContext) : IAnswerRepos
         => await dbContext.SaveChangesAsync(cancellationToken);
 
     public async Task DeleteAsync(Answer answer)
-        => _answers.Remove(answer);
+        => await Task.FromResult(_answers.Remove(answer));
 
     public async Task<IQueryable<Answer>> GetAnswerForQuestion(Guid questionId, CancellationToken cancellationToken)
-        => _answers
+        => await Task.FromResult(_answers
             .Where(x => x.QuestionId == questionId)
             .AsSplitQuery()
-            .AsQueryable();
+            .AsQueryable());
 
     public async Task<Answer?> GetAsync(Guid answerId, bool asNoTracking, CancellationToken cancellationToken)
     {
