@@ -1,6 +1,7 @@
 using Askify.Shared.Auth;
 using Askify.Shared.Auth.Context;
 using Askify.Shared.Auth.Middlewares;
+using Askify.Shared.Emails;
 using Askify.Shared.Exceptions;
 using Askify.Shared.Hash;
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +40,7 @@ public static class Extensions
 
         services.AddScoped<IAuthManager, AuthManager>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IEmailService, EmailService>();
         services.AddHttpClient();
         services.AddSingleton<IContextFactory, ContextFactory>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
