@@ -69,6 +69,16 @@
                   </span>
               </div>
             </p-card>
+            <div>
+              <p-button
+                *ngIf="answer.userId === currentUserId"
+                icon="pi pi-trash"
+                (onClick)="deleteAnswer(answer.answerId)"
+                styleClass="p-button-rounded p-button-text p-button-secondary"
+                pTooltip="Usuń odpowiedź"
+              >
+              </p-button>
+            </div>
           </div>
         </div>
 

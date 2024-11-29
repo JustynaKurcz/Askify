@@ -106,4 +106,16 @@ export class QuestionDetailsComponent implements OnChanges {
       }
     });
   }
+
+  deleteAnswer(answerId: string) {
+    this.questionService.deleteAnswer(this.question?.questionId!, answerId).subscribe({
+      next: () => {
+        this.loadAnswers();
+      },
+      error: () => {
+        console.error('Błąd podczas usuwania odpowiedzi');
+      }
+    });
+
+  }
 }

@@ -19,7 +19,7 @@ export type PaginationQuestion = {
 
 }
 export interface Answer {
-  questionId: string;
+  answerId: string;
   content: string;
   createdAt: Date;
   userId: string
@@ -87,5 +87,9 @@ export class QuestionService {
 
   createAnswer(questionId : string, createAnswer: CreateAnswer): Observable<any> {
     return this.http.post<any>(API_CONSTANTS.QUESTION.BASE_PATH + `/${questionId}/answers` , createAnswer);
+  }
+
+  deleteAnswer(questionId: string, answerId: string): Observable<any> {
+    return this.http.delete<any>(API_CONSTANTS.QUESTION.BASE_PATH + `/${questionId}/answers/${answerId}`);
   }
 }
