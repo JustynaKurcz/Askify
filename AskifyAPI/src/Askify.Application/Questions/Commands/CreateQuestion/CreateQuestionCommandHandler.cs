@@ -39,6 +39,7 @@ internal sealed class CreateQuestionCommandHandler(
             .WithTitle(command.Title)
             .WithContent(command.Content)
             .WithUser(userId)
+            .WithTag(command.Tag)
             .Build();
 
         await questionRepository.AddAsync(question, cancellationToken);
