@@ -1,60 +1,62 @@
 using System.Net.Mail;
+using Microsoft.Extensions.Options;
 
 namespace Askify.Shared.Emails;
 
-public class EmailService : IEmailService
+public sealed class EmailService(IOptions<EmailOptions> emailOptions) 
+    : IEmailService
 {
-    private readonly IConfiguration _configuration;
-    private readonly string _emailTemplate;
+    private readonly string _emailTemplate = LoadEmailTemplate();
+    private readonly EmailOptions _emailOptions = emailOptions.Value;
+    private const string TemplateName = "PasswordReset.html";
 
-    public EmailService(IConfiguration configuration)
+    public async Task SendPasswordResetEmailAsync(string email, string token, CancellationToken cancellationToken)
     {
-        _configuration = configuration;
-        _emailTemplate = LoadEmailTemplate();
+        var message = CreatePasswordResetMessage(email, token);
+        await SendEmailAsync(message, cancellationToken);
+    }
+    
+    private MailMessage CreatePasswordResetMessage(string email, string token)
+    {
+        var resetLink = $"{_emailOptions.BaseUrl}/api/v1/users/reset-password/{Uri.EscapeDataString(token)}";
+        var emailBody = _emailTemplate.Replace("{{resetLink}}", resetLink);
+
+        return new MailMessage
+        {
+            From = new MailAddress(_emailOptions.Username),
+            Subject = "Reset hasła",
+            Body = emailBody,
+            IsBodyHtml = true,
+            To = { email }
+        };
     }
 
+    private async Task SendEmailAsync(MailMessage message, CancellationToken cancellationToken)
+    {
+        using var client = CreateSmtpClient();
+        await client.SendMailAsync(message, cancellationToken);
+    }
+
+    private SmtpClient CreateSmtpClient()
+    {
+        return new SmtpClient(_emailOptions.SmtpHost, _emailOptions.SmtpPort)
+        {
+            Credentials = new NetworkCredential(_emailOptions.Username, _emailOptions.Password),
+            EnableSsl = true
+        };
+    }
+    
     private static string LoadEmailTemplate()
     {
         var assembly = Assembly.GetExecutingAssembly();
         var resourcePath = assembly.GetManifestResourceNames()
-            .FirstOrDefault(x => x.EndsWith("PasswordReset.html")) 
-            ?? throw new InvalidOperationException("Could not find email template.");
+                               .FirstOrDefault(x => x.EndsWith(TemplateName))
+                           ?? throw new InvalidOperationException("Could not find email template.");
 
-        using var stream = assembly.GetManifestResourceStream(resourcePath);
-        if (stream == null) throw new InvalidOperationException("Could not load email template.");
-        
+        using var stream = assembly.GetManifestResourceStream(resourcePath)
+                           ?? throw new InvalidOperationException("Could not load email template.");
+
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
-    }
-
-    public async Task SendPasswordResetEmailAsync(string email, string token, CancellationToken cancellationToken)
-    {
-        var smtpServer = _configuration["Email:SmtpHost"];
-        var smtpPort = int.Parse(_configuration["Email:SmtpPort"]);
-        var smtpUsername = _configuration["Email:Username"];
-        var smtpPassword = _configuration["Email:Password"];
-        var fromEmail = smtpUsername;
-
-        var baseUrl = _configuration["BaseUrl"] ?? "http://localhost:5244";
-        var resetLink = $"{baseUrl}/api/v1/users/reset-password/{Uri.EscapeDataString(token)}";
-
-        var emailBody = _emailTemplate.Replace("{{resetLink}}", resetLink);
-
-        var message = new MailMessage
-        {
-            From = new MailAddress(fromEmail),
-            Subject = "Reset hasła",
-            Body = emailBody,
-            IsBodyHtml = true
-        };
-        message.To.Add(email);
-
-        using var client = new SmtpClient(smtpServer, smtpPort)
-        {
-            Credentials = new NetworkCredential(smtpUsername, smtpPassword),
-            EnableSsl = true
-        };
-
-        await client.SendMailAsync(message, cancellationToken);
     }
 }

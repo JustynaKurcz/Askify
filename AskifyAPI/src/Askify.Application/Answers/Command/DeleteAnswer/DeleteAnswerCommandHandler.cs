@@ -15,15 +15,14 @@ internal sealed class DeleteAnswerCommandHandler(
 {
     public async Task Handle(DeleteAnswerCommand command, CancellationToken cancellationToken)
     {
-        var question = await questionRepository.GetAsync(command.QuestionId, false, cancellationToken);
-        if (question is null)
-            throw new QuestionException.QuestionNotFoundException(command.QuestionId);
+        var question = await questionRepository.GetAsync(command.QuestionId, false, cancellationToken)
+            ?? throw new QuestionException.QuestionNotFoundException(command.QuestionId);
 
-        var answer = await answerRepository.GetAsync(command.AnswerId, false, cancellationToken);
-        if (answer is null)
-            throw new AnswerException.AnswerNotFoundException(command.AnswerId);
+        var answer = await answerRepository.GetAsync(command.AnswerId, false, cancellationToken)
+                     ?? throw new AnswerException.AnswerNotFoundException(command.AnswerId);
 
         var userId = context.Identity.Id;
+
         if (!IsAnswerOwnedByUser(answer, userId))
             throw new AnswerException.AnswerNotOwnedByUser(command.AnswerId);
 

@@ -1,4 +1,4 @@
-using Askify.Application.Users.Queries.BrowseUsers;
+using Askify.Application.Users.Queries.Admin.BrowseUsers;
 using Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 using Askify.Core.Users.Entities;
 using Askify.Core.Users.Repositories;

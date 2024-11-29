@@ -40,7 +40,7 @@ public static class Extensions
 
         services.AddScoped<IAuthManager, AuthManager>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
-        services.AddScoped<IEmailService, EmailService>();
+        services.AddEmailService(configuration);
         services.AddHttpClient();
         services.AddSingleton<IContextFactory, ContextFactory>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

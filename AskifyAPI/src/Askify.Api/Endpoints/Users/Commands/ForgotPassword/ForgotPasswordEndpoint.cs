@@ -19,6 +19,7 @@ public sealed class ForgotPasswordEndpoint : IEndpointDefinition
                 Summary = "Request password reset",
                 Description = "Send password reset token to user's email",
             })
+            .WithTags(UserEndpoints.Users)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
     }

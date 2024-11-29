@@ -1,6 +1,6 @@
 using Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 
-namespace Askify.Application.Users.Queries.BrowseUsers;
+namespace Askify.Application.Users.Queries.Admin.BrowseUsers;
 
 public sealed class BrowseUsersQuery : PagedQuery, IRequest<PagedResponse<UserDetailsDto>>
 {

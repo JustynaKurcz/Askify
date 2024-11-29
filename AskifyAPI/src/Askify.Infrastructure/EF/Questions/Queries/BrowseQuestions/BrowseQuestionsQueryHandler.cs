@@ -22,9 +22,11 @@ internal sealed class BrowseQuestionsQueryHandler(
             .PaginateAsync(query.GetPageNumber(), query.GetPageSize(), cancellationToken);
     }
 
-    private IQueryable<Question> Search(BrowseQuestionsQuery query, IQueryable<Question> questions)
+    private static IQueryable<Question> Search(BrowseQuestionsQuery query, IQueryable<Question> questions)
     {
-        if (string.IsNullOrWhiteSpace(query.Search)) return questions;
+        if (string.IsNullOrWhiteSpace(query.Search)) 
+            return questions;
+        
         var searchTxt = $"%{query.Search}%";
         return questions.Where(question =>
             Microsoft.EntityFrameworkCore.EF.Functions.ILike(question.Title, searchTxt));

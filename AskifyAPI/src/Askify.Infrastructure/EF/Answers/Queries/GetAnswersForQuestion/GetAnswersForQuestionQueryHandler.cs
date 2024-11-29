@@ -12,6 +12,8 @@ internal sealed class GetAnswersForQuestionQueryHandler(
     {
         var answers = await answerRepository.GetAnswerForQuestion(query.QuestionId, cancellationToken);
 
-        return answers.Select(x => x.AsDto()).ToList();
+        return answers
+            .Select(x => x.AsDto())
+            .ToList();
     }
 }

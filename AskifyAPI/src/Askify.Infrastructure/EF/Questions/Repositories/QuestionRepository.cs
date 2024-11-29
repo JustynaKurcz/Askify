@@ -33,11 +33,11 @@ internal sealed class QuestionRepository(AskifyDbContext dbContext) : IQuestionR
     }
 
     public async Task DeleteAsync(Question question)
-        => _questions.Remove(question);
+        => await Task.FromResult(_questions.Remove(question));
 
     public async Task<IQueryable<Question>> GetAll(CancellationToken cancellationToken)
-        => _questions
+        => await Task.FromResult(_questions
             .Include(q => q.User)
             .AsSplitQuery()
-            .AsQueryable();
+            .AsQueryable());
 }
