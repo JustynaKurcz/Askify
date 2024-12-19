@@ -5,16 +5,20 @@
         <div class="question-header">
           <div class="question-title-section">
             <h3 class="title">{{ question?.title }}</h3>
-            <div class="metadata">
-              <div class="date-badge">
-                <i class="pi pi-calendar"></i>
-                {{ question?.createdAt | date:'dd/MM/yyyy HH:mm' }}
-              </div>
-              <div class="author-badge">
-                <i class="pi pi-user"></i>
-                {{ authorQuestion || 'Anonim' }}
-              </div>
+            <div class="question-content">
+              <p>{{ question?.content }}</p>
             </div>
+          </div>
+        </div>
+
+        <div class="question-metadata">
+          <div class="date-badge">
+            <i class="pi pi-calendar"></i>
+            {{ question?.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </div>
+          <div class="author-badge">
+            <i class="pi pi-user"></i>
+            {{ authorQuestion || 'Anonim' }}
           </div>
         </div>
 

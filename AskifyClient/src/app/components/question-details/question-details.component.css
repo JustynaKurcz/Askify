@@ -226,7 +226,15 @@
 .question-title-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.question-content {
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.6;
+  margin: 1rem 0;
 }
 
 .title {
@@ -238,11 +246,13 @@
   word-wrap: break-word;
 }
 
-.metadata {
+.question-metadata {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  color: #6b7280;
+  padding-top: 1rem;
+  border-top: 1px solid #E5E7EB;
+  color: #6B7280;
   font-size: 0.875rem;
 }
 
