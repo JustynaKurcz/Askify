@@ -30,6 +30,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'admin-panel',
+    loadComponent: () => import('./components/admin-panel/admin-panel.component').then(m => m.AdminPanelComponent),
+    // todo: add admin guard
+  },
+  {
     path: '**',
     loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
   }

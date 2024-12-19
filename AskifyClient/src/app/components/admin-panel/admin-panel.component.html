@@ -1,0 +1,60 @@
+<!-- admin-panel.component.html -->
+<div class="admin-panel">
+  <p-card header="Panel administracyjny" subheader="Zarządzanie użytkownikami" styleClass="mb-4">
+    <p-table
+      [value]="users"
+      [lazy]="true"
+      [paginator]="true"
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+      (onPage)="loadUsers($event)"
+      [rowHover]="true"
+      styleClass="p-datatable-gridlines"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nazwa użytkownika</th>
+          <th>Email</th>
+          <th>Rola</th>
+          <th>Data utworzenia</th>
+          <th>Akcje</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{user.userName}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <p-tag [severity]="getRoleSeverity(user.role)">
+              {{user.role}}
+            </p-tag>
+          </td>
+          <td>{{user.createdAt | date:'dd/MM/yyyy HH:mm'}}</td>
+          <td>
+            <button
+              pButton
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-text"
+              (click)="confirmDelete(user)"
+              [disabled]="user.role === 'Admin'"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="text-center p-4">
+            Nie znaleziono użytkowników.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
