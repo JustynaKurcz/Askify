@@ -3,11 +3,33 @@ import {API_CONSTANTS} from '../constants/api';
 import {SignUp} from './types/signUp';
 import {SignInResponse} from './types/signInResponse';
 import {SignIn} from './types/signIn';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import {PaginationQuestion} from './question.service';
 
+export interface User {
+  id: string;
+  email: string;
+  userName: string;
+  createdAt: Date;
+  role: string;
+}
+
+export type PaginationUser = {
+  items: User[];
+  totalItems: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+interface QueryParams {
+  pageNumber?: number;
+  pageSize?: number;
+  search?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +100,42 @@ export class AuthService {
 
   deleteAccount(): Observable<any> {
     return this.http.delete(API_CONSTANTS.USERS.BASE_PATH);
+  }
+
+  isAdmin(): boolean {
+    const token = this.localStorage?.getItem('token');
+    if (!token) return false;
+
+    const jwtHelper = new JwtHelperService();
+    try {
+      const decodedToken = jwtHelper.decodeToken(token);
+      return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';
+    } catch {
+      return false;
+    }
+  }
+
+  getUsers(params: QueryParams = {}): Observable<PaginationUser> {
+    let httpParams = new HttpParams();
+
+    if (params.pageNumber) {
+      httpParams = httpParams.set('pageNumber', params.pageNumber.toString());
+    }
+    if (params.pageSize) {
+      httpParams = httpParams.set('pageSize', params.pageSize.toString());
+    }
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+
+    return this.http.get<PaginationUser>(
+      API_CONSTANTS.USERS.BASE_PATH,
+      {params: httpParams}
+    );
+  }
+
+  deleteUserById(userId: string): Observable<any> {
+    return this.http.delete(`${API_CONSTANTS.USERS.BASE_PATH}/${userId}`);
   }
 
 }

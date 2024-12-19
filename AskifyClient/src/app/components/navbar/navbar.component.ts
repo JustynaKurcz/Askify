@@ -53,6 +53,14 @@ export class NavbarComponent implements OnInit {
         routerLink: ['/questions']
       }
     ];
+
+    if (this.authService.isAdmin()) {
+      this.menuItems.push({
+        label: 'Panel administracyjny',
+        icon: 'pi pi-cog',
+        routerLink: ['/admin-panel']
+      });
+    }
   }
 
   private updateUserMenuItems(isLoggedIn : boolean) {
