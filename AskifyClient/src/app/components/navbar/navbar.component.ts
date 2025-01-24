@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
       },
       {
         label: 'Pytania',
-        icon: 'pi pi-question',
+        icon: 'pi pi-question-circle',
         routerLink: ['/pytania']
       }
     ];
