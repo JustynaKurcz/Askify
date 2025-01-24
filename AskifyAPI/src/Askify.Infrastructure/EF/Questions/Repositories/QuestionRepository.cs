@@ -37,6 +37,7 @@ internal sealed class QuestionRepository(AskifyDbContext dbContext) : IQuestionR
 
     public async Task<IQueryable<Question>> GetAll(CancellationToken cancellationToken)
         => await Task.FromResult(_questions
+            .AsNoTracking()
             .Include(q => q.User)
             .AsSplitQuery()
             .AsQueryable());
