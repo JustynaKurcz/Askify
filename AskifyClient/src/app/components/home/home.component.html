@@ -1,12 +1,95 @@
-<div class="faq-container">
-  <h1>Sekcja FAQ</h1>
+<div class="project-container">
+    <div class="title-decoration">
+      <span class="line"></span>
+      <h1>O projekcie</h1>
+      <span class="line"></span>
+    </div>
 
-  <p-accordion [multiple]="false">
-    <p-accordionTab
-      *ngFor="let item of faqItems"
-      [header]="item.question"
-    >
-      <p>{{ item.answer }}</p>
-    </p-accordionTab>
-  </p-accordion>
+  <main class="content">
+    <section class="project-info">
+      <div class="info-content">
+        <p>Projekt powstał w ramach przedmiotu Technologie Aplikacji Webowych II na Akademii Tarnowskiej.
+          Celem było zaprojektowanie nowoczesnej aplikacji webowej wykorzystującej zaawansowane technologie
+          i&nbsp;najlepsze praktyki programistyczne.</p>
+      </div>
+    </section>
+
+    <section class="authors">
+      <div class="title-decoration">
+        <span class="line"></span>
+        <h2>Zespół projektowy</h2>
+        <span class="line"></span>
+      </div>
+      <div class="authors-grid">
+        <div class="author-card">
+          <div class="author-avatar">
+            <i class="pi pi-user"></i>
+          </div>
+          <h3>Justyna Kurcz</h3>
+          <p>Fullstack Developer</p>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/justynakurcz/" target="_blank" class="social-link">
+              <i class="pi pi-linkedin"></i>
+            </a>
+            <a href="https://github.com/justynakurcz" target="_blank" class="social-link">
+              <i class="pi pi-github"></i>
+            </a>
+          </div>
+        </div>
+        <div class="author-card">
+          <div class="author-avatar">
+            <i class="pi pi-user"></i>
+          </div>
+          <h3>Jakub Piekielniak</h3>
+          <p>Fullstack Developer</p>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/jpiekielniak/" target="_blank" class="social-link">
+              <i class="pi pi-linkedin"></i>
+            </a>
+            <a href="https://github.com/jpiekielniak" target="_blank" class="social-link">
+              <i class="pi pi-github"></i>
+            </a>
+          </div>
+        </div>
+        <div class="author-card">
+          <div class="author-avatar">
+            <i class="pi pi-user"></i>
+          </div>
+          <h3>mgr inż. Dariusz Piwko</h3>
+          <p>Prowadzący przedmiot</p>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/dariusz-piwko-62a939138/" target="_blank" class="social-link">
+              <i class="pi pi-linkedin"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tech-section">
+      <div class="title-decoration">
+        <span class="line"></span>
+        <h2>Stos technologiczny</h2>
+        <span class="line"></span>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <i class="pi pi-desktop"></i>
+          <span>Angular</span>
+        </div>
+        <div class="tech-item">
+          <i class="pi pi-server"></i>
+          <span>.NET</span>
+        </div>
+        <div class="tech-item">
+          <i class="pi pi-database"></i>
+          <span>PostgreSQL</span>
+        </div>
+        <div class="tech-item">
+          <i class="pi pi-box"></i>
+          <span>Docker</span>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
