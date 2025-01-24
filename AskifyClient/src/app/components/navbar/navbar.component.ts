@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
 import {NgForOf, NgOptimizedImage} from '@angular/common';
 import {AvatarModule} from 'primeng/avatar';
