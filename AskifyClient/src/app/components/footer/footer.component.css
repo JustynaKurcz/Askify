@@ -1,7 +1,6 @@
 .app-footer {
-  background: linear-gradient(135deg, #f8f9ff 0%, #f0f1ff 100%);
+  background: linear-gradient(135deg, #ededf3 0%, rgba(228, 214, 241, 0.8) 100%);
   padding-top: 4rem;
-  margin-top: 4rem;
   position: relative;
   overflow: hidden;
 
