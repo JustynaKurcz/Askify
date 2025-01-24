@@ -29,6 +29,7 @@ export interface Answer {
 export type CreateQuestion = {
   title: string;
   content: string;
+  tag: number;
 }
 
 interface QueryParams {

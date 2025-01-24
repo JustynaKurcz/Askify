@@ -22,18 +22,18 @@
   <div class="form-field">
     <div class="field-label">
       <i class="pi pi-tag"></i>
-      <label for="tagId">Tag</label>
+      <label for="tag">Tag</label>
     </div>
     <p-dropdown
-      id="tagId"
+      id="tag"
       [options]="tags"
-      formControlName="tagId"
+      formControlName="tag"
       optionLabel="displayName"
       optionValue="id"
       placeholder="Wybierz tag"
       [style]="{'width': '100%'}"
     ></p-dropdown>
-    <div class="error-message" *ngIf="questionForm.get('tagId')?.invalid && questionForm.get('tagId')?.touched">
+    <div class="error-message" *ngIf="questionForm.get('tag')?.invalid && questionForm.get('tag')?.touched">
       <i class="pi pi-exclamation-circle"></i>
       Wybierz kategorię
     </div>
