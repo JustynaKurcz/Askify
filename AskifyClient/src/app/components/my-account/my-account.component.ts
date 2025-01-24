@@ -6,7 +6,7 @@ import {CardModule} from 'primeng/card';
 import {TagModule} from 'primeng/tag';
 import {AuthService} from '../../services/auth.service';
 import {catchError, tap, throwError} from 'rxjs';
-import {Button} from 'primeng/button';
+import {ButtonModule} from 'primeng/button';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
 import {DockModule} from 'primeng/dock';
@@ -28,7 +28,7 @@ interface UserAccount {
     NgIf,
     CardModule,
     TagModule,
-    Button,
+    ButtonModule,
     ConfirmDialogModule,
     ToastModule,
     DockModule
