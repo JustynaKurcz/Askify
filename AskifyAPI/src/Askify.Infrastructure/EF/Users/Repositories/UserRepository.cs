@@ -1,4 +1,5 @@
 using Askify.Core.Users.Entities;
+using Askify.Core.Users.Enums;
 using Askify.Core.Users.Repositories;
 
 namespace Askify.Infrastructure.EF.Users.Repositories;
@@ -29,6 +30,7 @@ internal sealed class UserRepository(AskifyDbContext dbContext) : IUserRepositor
 
     public async Task<IQueryable<User>> GetAll(CancellationToken cancellationToken)
         => _users
+            .Where(x => x.Role != Role.Admin)
             .AsSplitQuery()
             .AsQueryable();
 }
