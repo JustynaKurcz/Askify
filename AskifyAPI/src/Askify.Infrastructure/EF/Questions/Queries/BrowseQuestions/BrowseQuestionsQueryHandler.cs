@@ -15,7 +15,7 @@ internal sealed class BrowseQuestionsQueryHandler(
         var questions = await questionRepository.GetAll(cancellationToken);
 
         questions = Search(query, questions);
-        
+
         return await questions
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.AsDto())
@@ -24,9 +24,9 @@ internal sealed class BrowseQuestionsQueryHandler(
 
     private static IQueryable<Question> Search(BrowseQuestionsQuery query, IQueryable<Question> questions)
     {
-        if (string.IsNullOrWhiteSpace(query.Search)) 
+        if (string.IsNullOrWhiteSpace(query.Search))
             return questions;
-        
+
         var searchTxt = $"%{query.Search}%";
         return questions.Where(question =>
             Microsoft.EntityFrameworkCore.EF.Functions.ILike(question.Title, searchTxt));
