@@ -1,40 +1,47 @@
-:host ::ng-deep {
   .answer-sidebar {
     .p-sidebar-content {
       padding: 0;
+      font-size: 3rem;
     }
-  }
-
-  .p-sidebar-header {
-    padding: 1.5rem;
-    background-color: #f9fafb;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  .p-sidebar {
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .p-sidebar-mask {
-    display: none !important;
   }
 
   .answer-form {
     padding: 1.5rem;
+    width: 100%;
   }
 
-  .form-field {
-    margin-bottom: 1.5rem;
-  }
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
 
-  .p-inputtextarea {
-    resize: vertical;
-    min-height: 120px;
+    i {
+      font-size: 1.25rem;
+      color: #9333ea;
+    }
+
+    label {
+      color: #374151;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .character-count {
+      margin-left: auto;
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
   }
 
   .error-message {
     color: #dc2626;
-    min-height: 20px;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
 
   .form-actions {
@@ -42,6 +49,4 @@
     justify-content: flex-end;
     gap: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid #e5e7eb;
   }
-}
