@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Button } from 'primeng/button';
+import {ButtonDirective} from 'primeng/button';
 import { NgIf } from '@angular/common';
 import {CreateQuestion, QuestionService, Tag} from '../../services/question.service';
 import { DropdownModule } from 'primeng/dropdown';
@@ -15,9 +15,9 @@ import { DropdownModule } from 'primeng/dropdown';
     ReactiveFormsModule,
     InputTextModule,
     InputTextareaModule,
-    Button,
     NgIf,
-    DropdownModule
+    DropdownModule,
+    ButtonDirective
   ],
   templateUrl: './create-question.component.html',
   styleUrl: './create-question.component.css'
@@ -35,7 +35,7 @@ export class CreateQuestionComponent implements OnInit {
     this.questionForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(250)]],
       content: ['', [Validators.required, Validators.maxLength(5000)]],
-      tagId: [null, Validators.required]
+      tag: [null, Validators.required]
     });
   }
 

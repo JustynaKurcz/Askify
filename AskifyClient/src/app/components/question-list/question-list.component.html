@@ -1,111 +1,117 @@
-<p-card class="questions-page">
-  <ng-template pTemplate="header">
-    <div class="header-container">
-      <div class="title-container">
-        <h1>Pytania</h1>
-      </div>
+<div class="questions-page">
+  <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
 
-      <div class="search-container">
-  <span class="p-input-icon-left search-section">
-    <i class="pi pi-search"></i>
-    <input
-      pInputText
-      type="text"
-      (input)="onSearch($event)"
-      placeholder="Wyszukaj pytanie..."
-      class="p-inputtext-sm"
-    />
-  </span>
+  <div class="content-container">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+  </div>
+</div>
+
+<ng-container *ngTemplateOutlet="modalTemplate"></ng-container>
+
+<ng-template #headerTemplate>
+  <header class="header-container">
+    <div class="title-container">
+      <h1>Pytania</h1>
+    </div>
+
+    <div class="search-container">
+      <div class="search-wrapper">
+        <i class="pi pi-search search-icon"></i>
+        <input
+          type="text"
+          (input)="onSearch($event)"
+          placeholder="Wyszukaj pytanie..."
+          class="search-input"
+        />
       </div>
     </div>
-    <p-divider></p-divider>
+  </header>
+</ng-template>
+
+<ng-template #contentTemplate>
+  <ng-container *ngTemplateOutlet="addButtonTemplate"></ng-container>
+
+  <ng-container *ngIf="loading; else loadedContent">
+    <div class="spinner-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </ng-container>
+
+  <ng-template #loadedContent>
+    <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
+    <ng-container *ngTemplateOutlet="paginatorTemplate"></ng-container>
   </ng-template>
+</ng-template>
 
-  <div>
-    <div class="button-section" *ngIf="isLoggedIn">
-      <div class="add-button-container">
-        <p-button
-          icon="pi pi-plus"
-          styleClass="p-button-rounded p-button-outlined"
-          [style]="{
-          'border-color': '#9333ea',
-          'color': '#9333ea',
-          'width': '3rem',
-          'height': '3rem',
-          'border-radius': '50%',
-          'box-shadow': '0 2px 6px rgba(147, 51, 234, 0.2)'
-        }"
-          (onClick)="addQuestion()"
-        >
-        </p-button>
-      </div>
-    </div>
+<ng-template #addButtonTemplate>
+  <div class="button-section" *ngIf="isLoggedIn && !loading">
+    <button class="add-button" (click)="addQuestion()">
+      <i class="pi pi-plus"></i>
+    </button>
+  </div>
+</ng-template>
 
-    <p-table
-      #dt
-      [value]="questions"
-      [rows]="pageSize"
-      [paginator]="true"
-      [rowsPerPageOptions]="pageSizeOptions"
-      [totalRecords]="totalRecords"
-      [rowHover]="true"
-      [loading]="loading"
-      styleClass="p-datatable-sm p-datatable-gridlines"
-      dataKey="questionId"
-      [showCurrentPageReport]="true"
-      [lazy]="true"
-      currentPageReportTemplate="Pokazano {first} do {last} z {totalRecords} pytań"
-      [tableStyle]="{ 'min-width': '50rem' }"
-      (onPage)="onPageChange($event)"
-    >
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 85%">
-            <div class="column-header">
-              <i class="pi pi-question-circle"></i>
-              Pytanie
-            </div>
-          </th>
-          <th style="width: 15%">Akcje</th>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="body" let-question>
-        <tr>
-          <td>
-            <div class="question-info">
-              <span class="question-title">{{ question.title }}</span>
-              <span class="question-date">
+<ng-template #tableTemplate>
+  <div class="table-container">
+    <table class="questions-table">
+      <thead>
+      <tr></tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let question of questions">
+        <td>
+          <div class="question-info">
+            <span class="question-title">{{ question.title }}</span>
+            <span class="question-date">
                 Dodano: {{ question.createdAt | date:'dd/MM/yyyy' }}
               </span>
-            </div>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <p-button
-                icon="pi pi-eye"
-                (onClick)="showDetails(question)"
-                styleClass="p-button-rounded p-button-info p-button-text"
-                pTooltip="Zobacz szczegóły"
-                tooltipPosition="top"
-              ></p-button>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-
-    </p-table>
+          </div>
+        </td>
+        <td>
+          <div>
+            <span class="question-tag">{{ question.tag }}</span>
+          </div>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button
+              class="action-button"
+              (click)="showDetails(question)"
+              title="Zobacz szczegóły"
+            >
+              <i class="pi pi-eye"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
-</p-card>
+</ng-template>
 
-<p-dialog
-  [(visible)]="displayDialog"
-  [header]="'Szczegóły pytania'"
-  [modal]="true"
-  [style]="{width: '50vw'}"
-  [breakpoints]="{'960px': '75vw', '640px': '90vw'}"
-  [draggable]="false"
-  styleClass="question-dialog"
->
-  <app-question-details [question]="selectedQuestion"></app-question-details>
-</p-dialog>
+<ng-template #paginatorTemplate>
+  <p-paginator
+    [rows]="pageSize"
+    [totalRecords]="totalRecords"
+    [rowsPerPageOptions]="pageSizeOptions"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Pokazano {first} do {last} z {totalRecords} pytań"
+    (onPageChange)="onPageChange($event)"
+  ></p-paginator>
+</ng-template>
+
+<ng-template #modalTemplate>
+  <div class="modal" *ngIf="displayDialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Szczegóły pytania</h2>
+        <button class="close-button" (click)="displayDialog = false">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-question-details [question]="selectedQuestion"></app-question-details>
+      </div>
+    </div>
+  </div>
+</ng-template>

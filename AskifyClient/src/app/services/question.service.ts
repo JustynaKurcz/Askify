@@ -6,7 +6,7 @@ import {API_CONSTANTS} from '../constants/api';
 export interface Question {
   questionId: string;
   title: string;
-  content: string;
+  tag: string;
   createdAt: Date;
   userId: string;
 }
@@ -30,6 +30,7 @@ export interface Answer {
 export type CreateQuestion = {
   title: string;
   content: string;
+  tag: number;
 }
 
 interface QueryParams {

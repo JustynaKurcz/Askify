@@ -6,7 +6,7 @@
           <i class="pi pi-user"></i>
         </div>
         <div class="basic-info">
-          <h1>{{ userAccount?.userName }}</h1>
+          <h1>{{ userAccount.userName }}</h1>
         </div>
       </div>
     </div>
@@ -56,12 +56,25 @@
     </div>
 
     <div class="delete-section">
-      <p-button
-        label="Usuń konto"
-        icon="pi pi-trash"
-        severity="danger"
-        (onClick)="confirmDelete()"
-      ></p-button>
+      <div class="delete-content">
+        <div class="warning-icon">
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+        <div class="warning-text">
+          <h3>Usuwanie konta</h3>
+          <p>Ta operacja spowoduje trwałe usunięcie Twojego konta wraz ze wszystkimi danymi. Tej czynności nie można
+            cofnąć. Upewnij się, że chcesz kontynuować.</p>
+        </div>
+      </div>
+      <div class="delete-actions">
+        <p-button
+          label="Usuń konto"
+          icon="pi pi-trash"
+          severity="danger"
+          variant="outlined"
+          (onClick)="confirmDelete()">
+        </p-button>
+      </div>
     </div>
 
   </p-card>

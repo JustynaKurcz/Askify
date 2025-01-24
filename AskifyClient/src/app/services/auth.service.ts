@@ -7,7 +7,6 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {PaginationQuestion} from './question.service';
 
 export interface User {
   id: string;
@@ -73,6 +72,7 @@ export class AuthService {
 
   async signOut() {
     this.localStorage?.removeItem('token');
+    this.localStorage?.removeItem('userId');
     this.isAuthenticatedSubject.next(false);
   }
 
@@ -138,4 +138,7 @@ export class AuthService {
     return this.http.delete(`${API_CONSTANTS.USERS.BASE_PATH}/${userId}`);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(API_CONSTANTS.USERS.FORGOT_PASSWORD, email);
+  }
 }

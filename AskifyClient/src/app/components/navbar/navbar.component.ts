@@ -45,12 +45,12 @@ export class NavbarComponent implements OnInit {
       {
         label: 'Strona główna',
         icon: 'pi pi-home',
-        routerLink: ['/home']
+        routerLink: ['/strona-glowna']
       },
       {
         label: 'Pytania',
-        icon: 'pi pi-question',
-        routerLink: ['/questions']
+        icon: 'pi pi-question-circle',
+        routerLink: ['/pytania']
       }
     ];
 
@@ -58,7 +58,7 @@ export class NavbarComponent implements OnInit {
       this.menuItems.push({
         label: 'Panel administracyjny',
         icon: 'pi pi-cog',
-        routerLink: ['/admin-panel']
+        routerLink: ['/panel-administracyjny']
       });
     }
   }
@@ -69,7 +69,7 @@ export class NavbarComponent implements OnInit {
         {
           label: 'Moje konto',
           icon: 'pi pi-user',
-          routerLink: ['/profile']
+          routerLink: ['/moje-konto']
         },
         {
           separator: true
@@ -88,18 +88,14 @@ export class NavbarComponent implements OnInit {
         {
           label: 'Zaloguj się',
           icon: 'pi pi-sign-in',
-          routerLink: ['/sign-in']
+          routerLink: ['/zaloguj-sie']
         },
         {
           label: 'Zarejestruj się',
           icon: 'pi pi-user-plus',
-          routerLink: ['/sign-up']
+          routerLink: ['/zarejestruj-sie']
         }
       ];
     }
-  }
-
-  navigateToHome() {
-    this
   }
 }

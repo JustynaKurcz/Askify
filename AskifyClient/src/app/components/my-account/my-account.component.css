@@ -111,86 +111,163 @@
       }
     }
   }
+
   .delete-section {
-    padding: 0 5rem 5rem 5rem;
-    display: flex;
-    justify-content: center;
+    margin-top: 2rem;
+    padding: 2.5rem;
+    background: #fff5f5;
+    border-radius: 16px;
+    margin: 3rem;
+
+    .delete-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+
+      .warning-icon {
+        background: #fee2e2;
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          color: #dc2626;
+          font-size: 2rem;
+        }
+      }
+
+      .warning-text {
+        flex: 1;
+
+        h3 {
+          color: #dc2626;
+          font-size: 1.25rem;
+          font-weight: 600;
+          margin: 0 0 0.5rem 0;
+        }
+
+        p {
+          color: #7f1d1d;
+          line-height: 1.6;
+          margin: 0;
+        }
+      }
+    }
+
+    .delete-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+  }
+
+  :host ::ng-deep {
+    .p-button {
+      &.p-button-outlined {
+        background: white !important;
+        border: 1px solid #dc2626 !important;
+        color: #dc2626 !important;
+
+        &:hover {
+          background: #fff5f5 !important;
+        }
+
+        .p-button-icon {
+          color: #dc2626 !important;
+        }
+      }
+    }
   }
 }
 
-@media (min-width: 1400px) {
-  .account-container {
-    .details-grid {
-      grid-template-columns: repeat(2, 1fr);
 
-      .info-card {
-        padding: 2.5rem;
+  @media (min-width: 1400px) {
+    .account-container {
+      .details-grid {
+        grid-template-columns: repeat(2, 1fr);
 
-        .info-header {
-          margin-bottom: 1.5rem;
+        .info-card {
+          padding: 2.5rem;
 
-          i {
+          .info-header {
+            margin-bottom: 1.5rem;
+
+            i {
+              font-size: 1.75rem;
+            }
+
+            span {
+              font-size: 1.2rem;
+            }
+          }
+
+          .info-content {
+            font-size: 1.5rem;
+          }
+        }
+      }
+
+    }
+  }
+
+  @media (max-width: 991px) {
+    .account-container {
+      .details-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 0 2rem 2rem 2rem;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .account-container {
+      padding: 0 1rem;
+
+      .profile-section {
+        padding: 2rem 1.5rem;
+
+        .profile-info {
+          flex-direction: column;
+          text-align: center;
+          gap: 1rem;
+
+          .profile-picture {
+            width: 120px;
+            height: 120px;
+          }
+
+          .basic-info h1 {
             font-size: 1.75rem;
           }
+        }
+      }
 
-          span {
-            font-size: 1.2rem;
+      .details-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1.5rem 1.5rem 1.5rem;
+
+        .info-card {
+          padding: 1.5rem;
+
+          .info-content {
+            font-size: 1.1rem;
           }
         }
-
-        .info-content {
-          font-size: 1.5rem;
-        }
       }
-    }
 
-  }
-}
-
-@media (max-width: 991px) {
-  .account-container {
-    .details-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      padding: 0 2rem 2rem 2rem;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .account-container {
-    padding: 0 1rem;
-
-    .profile-section {
-      padding: 2rem 1.5rem;
-
-      .profile-info {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-
-        .profile-picture {
-          width: 120px;
-          height: 120px;
-        }
-
-        .basic-info h1 {
-          font-size: 1.75rem;
-        }
-      }
-    }
-
-    .details-grid {
-      grid-template-columns: 1fr;
-      padding: 0 1.5rem 1.5rem 1.5rem;
-
-      .info-card {
+      .delete-section {
+        margin: 1.5rem;
         padding: 1.5rem;
 
-        .info-content {
-          font-size: 1.1rem;
+        .delete-content {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
         }
       }
     }
   }
-}

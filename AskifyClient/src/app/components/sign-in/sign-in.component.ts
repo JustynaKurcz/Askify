@@ -50,7 +50,7 @@ export class SignInComponent implements OnInit{
     if (this.signInForm.valid) {
       this.authService.signIn(this.signInForm.value)
         .subscribe({
-          next: () => this.router.navigate(['/home']),
+          next: () => this.router.navigate(['/strona-glowna']),
           error: () => {
            this.toastService.showWarning('Błędne dane logowania');
           }
@@ -59,6 +59,6 @@ export class SignInComponent implements OnInit{
   }
 
   onForgotPassword() {
-
+    this.router.navigate(['/przypomnij-haslo']);
   }
 }

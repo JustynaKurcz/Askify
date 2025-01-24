@@ -3,36 +3,40 @@ import {authGuard} from './guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'sign-up',
+    path: 'zarejestruj-sie',
     loadComponent: () => import('./components/sign-up/sign-up.component').then(m => m.SignUpComponent)
   },
   {
-    path: 'sign-in',
+    path: 'zaloguj-sie',
     loadComponent: () => import('./components/sign-in/sign-in.component').then(m => m.SignInComponent)
   },
   {
-    path: 'home',
+    path: 'strona-glowna',
     loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent),
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'strona-glowna',
     pathMatch: 'full'
   },
   {
-    path: 'questions',
+    path: 'pytania',
     loadComponent: () => import('./components/question-list/question-list.component').then(m => m.QuestionListComponent),
     canActivate: [authGuard]
   },
   {
-    path: 'profile',
+    path: 'moje-konto',
     loadComponent: () => import('./components/my-account/my-account.component').then(m => m.MyAccountComponent),
     canActivate: [authGuard]
   },
   {
-    path: 'admin-panel',
+    path: 'panel-administracyjny',
     loadComponent: () => import('./components/admin-panel/admin-panel.component').then(m => m.AdminPanelComponent),
     // todo: add admin guard
+  },
+  {
+    path: 'przypomnij-haslo',
+    loadComponent: () => import('./components/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
   },
   {
     path: '**',

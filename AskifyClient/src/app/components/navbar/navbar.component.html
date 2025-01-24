@@ -1,31 +1,28 @@
 <div class="navbar">
-  <div class="navbar-content">
-    <div class="left-section">
-      <img ngSrc="assets/askify-logo.webp" alt="Askify Logo" class="navbar-logo" height="1024" width="1024">
-      <span class="logo-text">Askify</span>
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a class="brand-link">
+        <img ngSrc="assets/askify-logo.webp" alt="Askify Logo" class="brand-logo" height="1024" width="1024">
+        <span class="brand-text">Askify</span>
+      </a>
     </div>
 
-    <div class="nav-items">
-
+    <div class="nav-links">
       <p-button
         *ngFor="let item of menuItems"
         [label]="item.label"
         [icon]="item.icon"
         [routerLink]="item.routerLink"
-        styleClass="p-button-text">
+        styleClass="p-button-text nav-link"
+       >
       </p-button>
-
     </div>
 
-    <div class="right-section">
-      <i class="pi pi-user"
-         (click)="menu.toggle($event)"
-         style="cursor: pointer">
-      </i>
-      <p-menu #menu
-              [popup]="true"
-              [model]="userMenuItems">
-      </p-menu>
+    <div class="user-menu">
+      <button class="user-menu-trigger" (click)="menu.toggle($event)">
+        <i class="pi pi-user"></i>
+      </button>
+      <p-menu #menu [popup]="true" [appendTo]="'body'" [model]="userMenuItems"></p-menu>
     </div>
   </div>
 </div>
