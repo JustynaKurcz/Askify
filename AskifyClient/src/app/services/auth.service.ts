@@ -138,4 +138,7 @@ export class AuthService {
     return this.http.delete(`${API_CONSTANTS.USERS.BASE_PATH}/${userId}`);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(API_CONSTANTS.USERS.FORGOT_PASSWORD, email);
+  }
 }

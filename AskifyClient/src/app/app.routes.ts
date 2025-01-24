@@ -3,11 +3,11 @@ import {authGuard} from './guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'zaloguj-sie',
+    path: 'zarejestruj-sie',
     loadComponent: () => import('./components/sign-up/sign-up.component').then(m => m.SignUpComponent)
   },
   {
-    path: 'zarejestruj-sie',
+    path: 'zaloguj-sie',
     loadComponent: () => import('./components/sign-in/sign-in.component').then(m => m.SignInComponent)
   },
   {
@@ -33,6 +33,10 @@ export const routes: Routes = [
     path: 'panel-administracyjny',
     loadComponent: () => import('./components/admin-panel/admin-panel.component').then(m => m.AdminPanelComponent),
     // todo: add admin guard
+  },
+  {
+    path: 'przypomnij-haslo',
+    loadComponent: () => import('./components/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
   },
   {
     path: '**',

@@ -59,6 +59,6 @@ export class SignInComponent implements OnInit{
   }
 
   onForgotPassword() {
-
+    this.router.navigate(['/przypomnij-haslo']);
   }
 }
