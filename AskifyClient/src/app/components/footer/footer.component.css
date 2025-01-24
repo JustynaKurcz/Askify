@@ -1,0 +1,242 @@
+.app-footer {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f1ff 100%);
+  padding-top: 4rem;
+  margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, rgba(138, 43, 226, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+  }
+
+  .footer-section {
+    .logo-section {
+      h3 {
+        color: #8a2be2;
+        font-size: 2rem;
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      .slogan {
+        color: #64748b;
+        margin: 1rem 0 2rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+
+        .highlight {
+          color: #8a2be2;
+          font-weight: 600;
+          position: relative;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #8a2be2;
+            opacity: 0.3;
+          }
+        }
+      }
+
+      .authors {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 2rem;
+
+        .author-link {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          color: #64748b;
+          text-decoration: none;
+          padding: 0.5rem;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+
+          i {
+            color: #8a2be2;
+            font-size: 1.5rem;
+          }
+
+          span {
+            margin-top: 0.5rem;
+            font-size: 1.25rem;
+          }
+
+          &:hover {
+            background: rgba(138, 43, 226, 0.05);
+            transform: translateX(5px);
+            color: #8a2be2;
+          }
+        }
+      }
+    }
+  }
+
+  .newsletter {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.08);
+    min-width: 300px;
+
+    .newsletter-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .coming-soon {
+      color: #8a2be2;
+      font-weight: 600;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    .newsletter-preview {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      i {
+        color: #8a2be2;
+        font-size: 1.25rem;
+      }
+
+      span {
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  .newsletter-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+
+    .status-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(138, 43, 226, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        color: #8a2be2;
+        font-size: 24px;
+        animation: spin 2s linear infinite;
+      }
+    }
+
+    .coming-soon {
+      color: #8a2be2;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 4rem;
+    padding: 1.5rem 0;
+
+    .footer-bottom-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      text-align: center;
+
+      span {
+        color: #64748b;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .app-footer {
+      padding-top: 3rem;
+
+      .footer-content {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .footer-section {
+        text-align: center;
+
+        .logo-section {
+          .authors {
+            align-items: center;
+
+            .author-link {
+              justify-content: center;
+
+              &:hover {
+                transform: translateY(-2px);
+              }
+            }
+          }
+        }
+      }
+
+      .newsletter {
+        width: 100%;
+      }
+    }
+  }
