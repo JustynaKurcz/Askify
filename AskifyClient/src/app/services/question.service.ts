@@ -6,9 +6,10 @@ import {API_CONSTANTS} from '../constants/api';
 export interface Question {
   questionId: string;
   title: string;
-  tag: string;
-  createdAt: Date;
+  content: string;
   userId: string;
+  createdAt: Date;
+  tag: string;
 }
 
 export type PaginationQuestion = {

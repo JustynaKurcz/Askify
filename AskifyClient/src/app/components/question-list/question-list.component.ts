@@ -146,6 +146,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       header: 'Dodaj nowe pytanie',
       width: '600px',
       contentStyle: { overflow: 'auto' },
+      styleClass: 'question-dialog'
     });
 
     this.ref.onClose.subscribe((question: Question) => {
