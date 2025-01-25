@@ -6,9 +6,10 @@ import {API_CONSTANTS} from '../constants/api';
 export interface Question {
   questionId: string;
   title: string;
-  tag: string;
-  createdAt: Date;
+  content: string;
   userId: string;
+  createdAt: Date;
+  tag: string;
 }
 
 export type PaginationQuestion = {
@@ -102,5 +103,17 @@ export class QuestionService {
       `${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}/answers/${answerId}`,
       updateData
     );
+  }
+
+  getQuestion(questionId: string) : Observable<Question> {
+    return this.http.get<Question>(`${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}`);
+  }
+
+  updateQuestion(questionId: string, editQuestionData: {title: string; content: string; tag: number}) : Observable<any> {
+    return this.http.put<any>(`${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}`, editQuestionData);
+  }
+
+  deleteQuestion(questionId: string): Observable<any> {
+    return this.http.delete<any>(`${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}`);
   }
 }

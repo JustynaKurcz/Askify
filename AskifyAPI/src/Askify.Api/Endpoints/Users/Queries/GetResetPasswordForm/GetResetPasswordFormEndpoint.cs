@@ -1,4 +1,3 @@
-
 using Askify.Application.Users.Queries.GetResetPasswordForm;
 
 namespace Askify.Api.Endpoints.Users.Queries.GetResetPasswordForm;
@@ -8,7 +7,7 @@ internal sealed class GetResetPasswordFormEndpoint : IEndpointDefinition
     public void DefineEndpoints(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet($"{UserEndpoints.BasePath}/reset-password/{{token}}", async (
-                [FromRoute] string token,
+                [FromRoute(Name = "token")] string token,
                 [FromServices] IMediator mediator,
                 CancellationToken cancellationToken) =>
             {

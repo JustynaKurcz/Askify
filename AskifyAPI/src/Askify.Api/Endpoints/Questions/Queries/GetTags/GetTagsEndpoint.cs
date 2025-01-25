@@ -10,14 +10,14 @@ internal sealed class GetTagsEndpoint : IEndpointDefinition
     {
         endpoints.MapGet($"{QuestionEndpoints.BasePath}/tags", async () =>
             {
-                var tagValues = Enum.GetValues(typeof(Tag))
+                var tagValues = await Task.FromResult(Enum.GetValues(typeof(Tag))
                     .Cast<Tag>()
                     .Select(tag => new TagResponse(
                         Id: (int)tag,
                         Name: tag.ToString(),
                         DisplayName: tag.Humanize()
                     ))
-                    .ToList();
+                    .ToList());
 
                 return Results.Ok(tagValues);
             })

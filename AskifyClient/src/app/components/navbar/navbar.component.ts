@@ -6,6 +6,7 @@ import {MenuModule} from 'primeng/menu';
 import {InputTextModule} from 'primeng/inputtext';
 import {MenuItem} from 'primeng/api';
 import {AuthService} from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -24,6 +25,7 @@ import {AuthService} from '../../services/auth.service';
 export class NavbarComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   userMenuItems: MenuItem[] | undefined;
   menuItems: MenuItem[] | undefined;
@@ -78,8 +80,11 @@ export class NavbarComponent implements OnInit {
           label: 'Wyloguj się',
           icon: 'pi pi-sign-out',
           command: () => {
-            this.authService.signOut();
-            window.location.reload()
+            this.authService.signOut().then(() => {
+              this.updateUserMenuItems(false);
+              this.cdr.detectChanges();
+              this.router.navigate(['/strona-glowna']);
+            })
           }
         }
       ];

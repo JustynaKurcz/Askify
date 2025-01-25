@@ -79,6 +79,8 @@ export class AdminPanelComponent  implements OnInit {
       message: `Czy na pewno chcesz usunąć użytkownika ${user.userName}?`,
       header: 'Potwierdzenie usunięcia',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Tak',
+      rejectLabel: 'Nie',
       accept: () => this.deleteUser(user.id)
     });
   }

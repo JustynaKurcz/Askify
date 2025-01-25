@@ -32,7 +32,7 @@ export const routes: Routes = [
   {
     path: 'panel-administracyjny',
     loadComponent: () => import('./components/admin-panel/admin-panel.component').then(m => m.AdminPanelComponent),
-    // todo: add admin guard
+    canActivate: [authGuard]
   },
   {
     path: 'przypomnij-haslo',

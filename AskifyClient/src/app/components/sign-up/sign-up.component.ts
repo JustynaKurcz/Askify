@@ -48,12 +48,11 @@ export class SignUpComponent implements OnInit{
     });
   }
 
-
   onSubmit() {
     if (this.signUpForm.valid) {
       this.authService.signUp(this.signUpForm.value)
         .subscribe({
-          next: () => this.router.navigate(['/sign-in']),
+          next: () => this.router.navigate(['/zaloguj-sie']),
           error: () => {
             this.toastService.showWarning('Wystąpił błąd podczas rejestracji');
           }

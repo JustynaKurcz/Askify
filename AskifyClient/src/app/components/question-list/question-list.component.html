@@ -76,10 +76,18 @@
           <div class="action-buttons">
             <button
               class="action-button"
-              (click)="showDetails(question)"
+              (click)="showDetails(question.questionId)"
               title="Zobacz szczegóły"
             >
               <i class="pi pi-eye"></i>
+            </button>
+            <button
+              *ngIf="isAdmin"
+              class="delete-btn"
+              (click)="deleteQuestion(question.questionId)"
+              title="Usuń pytanie"
+            >
+              <i class="pi pi-trash"></i>
             </button>
           </div>
         </td>
@@ -105,12 +113,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2>Szczegóły pytania</h2>
-        <button class="close-button" (click)="displayDialog = false">
-          <i class="pi pi-times"></i>
-        </button>
+        <div class="modal-actions">
+          <button class="close-btn" (click)="displayDialog = false">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
       </div>
       <div class="modal-body">
-        <app-question-details [question]="selectedQuestion"></app-question-details>
+        <app-question-details [questionId]="questionId"></app-question-details>
       </div>
     </div>
   </div>

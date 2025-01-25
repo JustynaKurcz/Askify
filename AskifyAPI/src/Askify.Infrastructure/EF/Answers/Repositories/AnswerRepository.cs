@@ -21,6 +21,7 @@ internal sealed class AnswerRepository(AskifyDbContext dbContext) : IAnswerRepos
 
     public async Task<IQueryable<Answer>> GetAnswerForQuestion(Guid questionId, CancellationToken cancellationToken)
         => await Task.FromResult(_answers
+            .AsNoTracking()
             .Where(x => x.QuestionId == questionId)
             .AsSplitQuery()
             .AsQueryable());

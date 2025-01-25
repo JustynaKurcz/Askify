@@ -1,15 +1,14 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {SkeletonModule} from 'primeng/skeleton';
-import {CardModule} from 'primeng/card';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
-import {DividerModule} from 'primeng/divider';
-import {Answer, CreateAnswer, Question, QuestionService} from '../../services/question.service';
-import {Button} from 'primeng/button';
-import {MenuModule} from 'primeng/menu';
-import {AuthService} from '../../services/auth.service';
-import {CreateAnswerComponent} from '../create-answer/create-answer.component';
-import {PaginatorModule} from 'primeng/paginator';
-import {InputTextareaModule} from 'primeng/inputtextarea';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { finalize, forkJoin, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { Answer, CreateAnswer, Question, QuestionService } from '../../services/question.service';
+import { AuthService } from '../../services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { DatePipe, NgForOf, NgIf } from '@angular/common';
+import { CreateAnswerComponent } from '../create-answer/create-answer.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 interface AnswerWithAuthor extends Answer {
   authorName?: string;
@@ -18,77 +17,198 @@ interface AnswerWithAuthor extends Answer {
   isSaving?: boolean;
 }
 
+interface Tag {
+  id: number;
+  name: string;
+  displayName: string;
+}
+
 @Component({
   selector: 'app-question-details',
+  templateUrl: './question-details.component.html',
   standalone: true,
   imports: [
-    SkeletonModule,
-    CardModule,
-    NgIf,
-    DividerModule,
-    DatePipe,
+    FormsModule,
     NgForOf,
-    Button,
-    MenuModule,
     CreateAnswerComponent,
-    PaginatorModule,
-    InputTextareaModule
+    NgIf,
+    DatePipe,
+    ProgressSpinnerModule,
+    ToastModule
   ],
-  templateUrl: './question-details.component.html',
-  styleUrl: './question-details.component.css'
+  providers: [MessageService],
+  styleUrls: ['./question-details.component.css']
 })
-export class QuestionDetailsComponent implements OnChanges {
-  @Input() question: Question | null = null;
+export class QuestionDetailsComponent implements OnInit {
+  @Input() questionId!: string;
+
+  private readonly questionService = inject(QuestionService);
+  private readonly authService = inject(AuthService);
+  private readonly messageService = inject(MessageService);
+
+  question: Question | null = null;
   answers: AnswerWithAuthor[] = [];
-  loading = false;
+  tags: Tag[] = [];
+  authorQuestion = '';
   currentUserId = localStorage.getItem('userId');
-  authorQuestion: string = '';
-  showAnswerForm: boolean = false;
 
-  constructor(private questionService: QuestionService, private authService: AuthService) {
+  loading = true;
+  error = false;
+  showAnswerForm = false;
+  isEditing = false;
+  editQuestionData = {
+    title: '',
+    content: '',
+    tag: 1
+  };
+
+  ngOnInit() {
+    this.loadInitialData();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['question'] && changes['question'].currentValue) {
-      this.loadAnswers();
-      this.loadAuthorQuestion();
-    }
+  private loadInitialData() {
+    this.loadTags();
+    this.loadAllData();
   }
 
-  loadAuthorQuestion() {
-    this.authService.getUserName(this.question?.userId!).subscribe({
-      next: (userName) => {
-        this.authorQuestion = userName;
-      },
-      error: () => {
-        this.authorQuestion = 'Nieznany użytkownik';
-      }
+  private loadTags() {
+    this.questionService.getTags().subscribe({
+      next: (tags) => this.tags = tags,
+      error: (error) => console.error('Error loading tags:', error)
     });
   }
 
-  loadAnswers() {
-    if (!this.question) return;
+  private loadAllData() {
+    this.loading = true;
+    this.error = false;
+
+    this.questionService.getQuestion(this.questionId).pipe(
+      switchMap(question => {
+        this.question = question;
+        return this.loadQuestionDetails(question);
+      }),
+      switchMap(({author, answers}) => {
+        this.authorQuestion = author;
+        return this.loadAnswerAuthors(answers);
+      }),
+      finalize(() => this.loading = false)
+    ).subscribe({
+      next: ({answers, authors}) => {
+        this.answers = this.mapAnswersWithAuthors(answers, authors);
+      },
+      error: (err) => this.handleError(err)
+    });
+  }
+
+  private loadQuestionDetails(question: Question) {
+    return forkJoin({
+      author: this.authService.getUserName(question.userId).pipe(
+        catchError(() => of('Nieznany użytkownik'))
+      ),
+      answers: this.questionService.getQuestionAnswers(question.questionId)
+    });
+  }
+
+  private loadAnswerAuthors(answers: Answer[]) {
+    const authorRequests = answers.map(answer =>
+      this.authService.getUserName(answer.userId).pipe(
+        catchError(() => of('Nieznany użytkownik'))
+      )
+    );
+
+    return forkJoin({
+      answers: of(answers),
+      authors: forkJoin(authorRequests)
+    });
+  }
+
+  private mapAnswersWithAuthors(answers: Answer[], authors: string[]) {
+    return answers.map((answer, index) => ({
+      ...answer,
+      authorName: authors[index]
+    }));
+  }
+
+  private handleError(err: any) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Błąd',
+      detail: err.reason
+    });
+    this.error = true;
+  }
+
+  startEditingQuestion() {
+    this.isEditing = true;
+    this.editQuestionData = {
+      title: this.question!.title,
+      content: this.question!.content,
+      tag: +this.tags.find(tag => tag.displayName === this.question!.tag)?.id!
+    };
+  }
+
+  cancelEditingQuestion() {
+    this.isEditing = false;
+  }
+
+  saveQuestionEdit() {
+    if (!this.question?.questionId) return;
 
     this.loading = true;
-    this.questionService.getQuestionAnswers(this.question.questionId).subscribe({
-      next: (data) => {
-        this.answers = data;
-        this.answers.forEach(answer => {
-          this.authService.getUserName(answer.userId).subscribe({
-            next: (userName) => {
-              answer.authorName = userName;
-            },
-            error: () => {
-              answer.authorName = 'Nieznany użytkownik';
-            }
-          });
-        });
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Błąd podczas ładowania odpowiedzi:', error);
-        this.loading = false;
-      }
+    const data = {
+      ...this.editQuestionData,
+      tag: +this.editQuestionData.tag
+    };
+
+    this.questionService.updateQuestion(this.question.questionId, data)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: (updatedQuestion) => this.handleQuestionUpdateSuccess(updatedQuestion),
+        error: (error) => this.handleQuestionUpdateError(error)
+      });
+  }
+
+  private handleQuestionUpdateSuccess(updatedQuestion: Question) {
+    this.question = updatedQuestion;
+    this.isEditing = false;
+    this.loadAllData();
+  }
+
+  private handleQuestionUpdateError(error: any) {
+    const message = error?.error.code === 'question_cannot_be_changed'
+      ? 'Nie można edytować pytania po upływie 30 minut od jego utworzenia.'
+      : 'Wystąpił błąd podczas aktualizacji pytania.';
+
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Błąd',
+      detail: message
+    });
+  }
+
+  deleteQuestion() {
+    if (!this.question?.questionId) return;
+
+    this.questionService.deleteQuestion(this.question.questionId).subscribe({
+      next: () => this.handleQuestionDeleteSuccess(),
+      error: () => this.handleQuestionDeleteError()
+    });
+  }
+
+  private handleQuestionDeleteSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sukces',
+      detail: 'Pytanie zostało usunięte'
+    });
+    window.location.reload();
+  }
+
+  private handleQuestionDeleteError() {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Błąd',
+      detail: 'Wystąpił błąd podczas usuwania pytania'
     });
   }
 
@@ -99,31 +219,18 @@ export class QuestionDetailsComponent implements OnChanges {
   handleAnswerSubmitted(data: any) {
     if (!this.question?.questionId) return;
 
-    const answer: CreateAnswer = {
-      content: data.content,
-    };
+    this.loading = true;
+    const answer: CreateAnswer = { content: data.content };
 
-    this.questionService.createAnswer(this.question.questionId, answer).subscribe({
-      next: () => {
-
-        this.loadAnswers();
-        this.showAnswerForm = false;
-      },
-      error: () => {
-        this.showAnswerForm = false;
-      }
-    });
-  }
-
-  deleteAnswer(answerId: string) {
-    this.questionService.deleteAnswer(this.question?.questionId!, answerId).subscribe({
-      next: () => {
-        this.loadAnswers();
-      },
-      error: () => {
-        console.error('Błąd podczas usuwania odpowiedzi');
-      }
-    });
+    this.questionService.createAnswer(this.question.questionId, answer)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: () => {
+          this.loadAllData();
+          this.showAnswerForm = false;
+        },
+        error: () => this.showAnswerForm = false
+      });
   }
 
   startEditing(answerId: string) {
@@ -141,24 +248,31 @@ export class QuestionDetailsComponent implements OnChanges {
   }
 
   saveEdit(answer: AnswerWithAuthor) {
-    if (!answer.editContent?.trim()) {
-      return;
-    }
+    if (!answer.editContent?.trim()) return;
 
     answer.isSaving = true;
-    const updateData = {
-      content: answer.editContent.trim()
-    };
+    const updateData = { content: answer.editContent.trim() };
 
-    this.questionService.updateAnswer(this.question?.questionId!, answer.answerId, updateData).subscribe({
-      next: () => {
-        answer.content = answer.editContent!;
-        answer.isEditing = false;
-        answer.isSaving = false;
-      },
-      error: () => {
-        answer.isSaving = false;
-      }
-    });
+    this.questionService.updateAnswer(this.question?.questionId!, answer.answerId, updateData)
+      .pipe(finalize(() => answer.isSaving = false))
+      .subscribe({
+        next: () => {
+          answer.content = updateData.content;
+          answer.isEditing = false;
+        },
+        error: () => {}
+      });
+  }
+
+  deleteAnswer(answerId: string) {
+    this.loading = true;
+    this.questionService.deleteAnswer(this.question?.questionId!, answerId)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: () => {
+          this.answers = this.answers.filter(a => a.answerId !== answerId);
+        },
+        error: () => console.error('Błąd podczas usuwania odpowiedzi')
+      });
   }
 }
