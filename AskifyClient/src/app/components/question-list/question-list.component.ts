@@ -54,7 +54,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   private readonly defaultPageSize = 10;
 
   ref?: DynamicDialogRef;
-  selectedQuestion: Question | null = null;
+  questionId : string = '';
   displayDialog = false;
   loading = true;
   isLoggedIn = false;
@@ -136,8 +136,8 @@ export class QuestionListComponent implements OnInit, OnDestroy {
     this.searchSubject.next(target.value);
   }
 
-  showDetails(question: Question): void {
-    this.selectedQuestion = question;
+  showDetails(questionId: string): void {
+    this.questionId = questionId;
     this.displayDialog = true;
   }
 

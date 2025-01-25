@@ -1,15 +1,18 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {SkeletonModule} from 'primeng/skeleton';
 import {CardModule} from 'primeng/card';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {DividerModule} from 'primeng/divider';
 import {Answer, CreateAnswer, Question, QuestionService} from '../../services/question.service';
-import {Button} from 'primeng/button';
 import {MenuModule} from 'primeng/menu';
 import {AuthService} from '../../services/auth.service';
-import {CreateAnswerComponent} from '../create-answer/create-answer.component';
 import {PaginatorModule} from 'primeng/paginator';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {forkJoin, of} from 'rxjs';
+import {catchError, finalize, switchMap} from 'rxjs/operators';
+import {Button} from 'primeng/button';
+import {CreateAnswerComponent} from '../create-answer/create-answer.component';
 
 interface AnswerWithAuthor extends Answer {
   authorName?: string;
@@ -26,68 +29,75 @@ interface AnswerWithAuthor extends Answer {
     CardModule,
     NgIf,
     DividerModule,
-    DatePipe,
-    NgForOf,
-    Button,
     MenuModule,
-    CreateAnswerComponent,
     PaginatorModule,
-    InputTextareaModule
+    InputTextareaModule,
+    ProgressSpinnerModule,
+    DatePipe,
+    Button,
+    CreateAnswerComponent,
+    NgForOf
   ],
   templateUrl: './question-details.component.html',
   styleUrl: './question-details.component.css'
 })
-export class QuestionDetailsComponent implements OnChanges {
-  @Input() question: Question | null = null;
+export class QuestionDetailsComponent implements OnInit {
+  @Input() questionId!: string;
+
+  private readonly questionService = inject(QuestionService);
+  private readonly authService = inject(AuthService);
+
+  question: Question | null = null;
   answers: AnswerWithAuthor[] = [];
-  loading = false;
-  currentUserId = localStorage.getItem('userId');
   authorQuestion: string = '';
-  showAnswerForm: boolean = false;
+  loading = true;
+  error = false;
+  showAnswerForm = false;
+  currentUserId = localStorage.getItem('userId');
 
-  constructor(private questionService: QuestionService, private authService: AuthService) {
+  ngOnInit() {
+    this.loadAllData();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['question'] && changes['question'].currentValue) {
-      this.loadAnswers();
-      this.loadAuthorQuestion();
-    }
-  }
-
-  loadAuthorQuestion() {
-    this.authService.getUserName(this.question?.userId!).subscribe({
-      next: (userName) => {
-        this.authorQuestion = userName;
-      },
-      error: () => {
-        this.authorQuestion = 'Nieznany użytkownik';
-      }
-    });
-  }
-
-  loadAnswers() {
-    if (!this.question) return;
-
+  private loadAllData() {
     this.loading = true;
-    this.questionService.getQuestionAnswers(this.question.questionId).subscribe({
-      next: (data) => {
-        this.answers = data;
-        this.answers.forEach(answer => {
-          this.authService.getUserName(answer.userId).subscribe({
-            next: (userName) => {
-              answer.authorName = userName;
-            },
-            error: () => {
-              answer.authorName = 'Nieznany użytkownik';
-            }
-          });
+    this.error = false;
+
+    this.questionService.getQuestion(this.questionId).pipe(
+      switchMap(question => {
+        this.question = question;
+        return forkJoin({
+          author: this.authService.getUserName(question.userId).pipe(
+            catchError(() => of('Nieznany użytkownik'))
+          ),
+          answers: this.questionService.getQuestionAnswers(question.questionId)
         });
+      }),
+      switchMap(({author, answers}) => {
+        this.authorQuestion = author;
+        const authorRequests = answers.map(answer =>
+          this.authService.getUserName(answer.userId).pipe(
+            catchError(() => of('Nieznany użytkownik'))
+          )
+        );
+        return forkJoin({
+          answers: of(answers),
+          authors: forkJoin(authorRequests)
+        });
+      }),
+      finalize(() => {
         this.loading = false;
+      })
+    ).subscribe({
+      next: ({answers, authors}) => {
+        this.answers = answers.map((answer, index) => ({
+          ...answer,
+          authorName: authors[index]
+        }));
       },
-      error: (error) => {
-        console.error('Błąd podczas ładowania odpowiedzi:', error);
-        this.loading = false;
+      error: (err) => {
+        console.error('Error loading data:', err);
+        this.error = true;
       }
     });
   }
@@ -99,14 +109,16 @@ export class QuestionDetailsComponent implements OnChanges {
   handleAnswerSubmitted(data: any) {
     if (!this.question?.questionId) return;
 
+    this.loading = true;
     const answer: CreateAnswer = {
       content: data.content,
     };
 
-    this.questionService.createAnswer(this.question.questionId, answer).subscribe({
+    this.questionService.createAnswer(this.question.questionId, answer).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
       next: () => {
-
-        this.loadAnswers();
+        this.loadAllData();
         this.showAnswerForm = false;
       },
       error: () => {
@@ -116,13 +128,12 @@ export class QuestionDetailsComponent implements OnChanges {
   }
 
   deleteAnswer(answerId: string) {
-    this.questionService.deleteAnswer(this.question?.questionId!, answerId).subscribe({
-      next: () => {
-        this.loadAnswers();
-      },
-      error: () => {
-        console.error('Błąd podczas usuwania odpowiedzi');
-      }
+    this.loading = true;
+    this.questionService.deleteAnswer(this.question?.questionId!, answerId).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
+      next: () => this.loadAllData(),
+      error: () => console.error('Błąd podczas usuwania odpowiedzi')
     });
   }
 
@@ -141,24 +152,21 @@ export class QuestionDetailsComponent implements OnChanges {
   }
 
   saveEdit(answer: AnswerWithAuthor) {
-    if (!answer.editContent?.trim()) {
-      return;
-    }
+    if (!answer.editContent?.trim()) return;
 
     answer.isSaving = true;
     const updateData = {
       content: answer.editContent.trim()
     };
 
-    this.questionService.updateAnswer(this.question?.questionId!, answer.answerId, updateData).subscribe({
+    this.questionService.updateAnswer(this.question?.questionId!, answer.answerId, updateData).pipe(
+      finalize(() => answer.isSaving = false)
+    ).subscribe({
       next: () => {
         answer.content = answer.editContent!;
         answer.isEditing = false;
-        answer.isSaving = false;
       },
-      error: () => {
-        answer.isSaving = false;
-      }
+      error: () => {}
     });
   }
 }

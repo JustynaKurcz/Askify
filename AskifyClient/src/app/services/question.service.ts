@@ -104,4 +104,8 @@ export class QuestionService {
       updateData
     );
   }
+
+  getQuestion(questionId: string) : Observable<Question> {
+    return this.http.get<Question>(`${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}`);
+  }
 }

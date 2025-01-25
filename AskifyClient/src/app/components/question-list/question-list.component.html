@@ -76,7 +76,7 @@
           <div class="action-buttons">
             <button
               class="action-button"
-              (click)="showDetails(question)"
+              (click)="showDetails(question.questionId)"
               title="Zobacz szczegóły"
             >
               <i class="pi pi-eye"></i>
@@ -110,7 +110,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-question-details [question]="selectedQuestion"></app-question-details>
+        <app-question-details [questionId]="questionId"></app-question-details>
       </div>
     </div>
   </div>
