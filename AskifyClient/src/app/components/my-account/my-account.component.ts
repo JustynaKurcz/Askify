@@ -71,6 +71,8 @@ export class MyAccountComponent implements OnInit {
   confirmDelete() {
     this.confirmationService.confirm({
       message: 'Czy na pewno chcesz usunąć swoje konto? Tej operacji nie można cofnąć.',
+      acceptLabel: 'Tak',
+      rejectLabel: 'Nie',
       accept: () => {
         this.loading = true;
         this.authService.deleteAccount()

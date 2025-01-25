@@ -25,12 +25,19 @@ internal sealed class UserRepository(AskifyDbContext dbContext) : IUserRepositor
         => await _users
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
+    public async Task<string> GetUserName(Guid id, CancellationToken cancellationToken)
+        => await _users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken)
+            .ContinueWith(x => x.Result?.UserName ?? string.Empty, cancellationToken);
+
     public async Task DeleteAsync(User user)
-        => _users.Remove(user);
+        => await Task.FromResult(_users.Remove(user));
 
     public async Task<IQueryable<User>> GetAll(CancellationToken cancellationToken)
-        => _users
+        => await Task.FromResult(_users
+            .AsNoTracking()
             .Where(x => x.Role != Role.Admin)
             .AsSplitQuery()
-            .AsQueryable();
+            .AsQueryable());
 }

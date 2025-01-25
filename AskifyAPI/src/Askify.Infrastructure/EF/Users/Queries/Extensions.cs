@@ -1,5 +1,7 @@
 using Askify.Application.Users.Queries.GetCurrentLoggedUser.DTO;
 using Askify.Core.Users.Entities;
+using Humanizer;
+using Microsoft.OpenApi.Extensions;
 
 namespace Askify.Infrastructure.EF.Users.Queries;
 
@@ -11,6 +13,6 @@ public static class Extensions
             user.Email,
             user.UserName,
             user.CreatedAt,
-            user.Role.ToString()
+            user.Role.Humanize()
         );
 }

@@ -39,4 +39,11 @@ public class QuestionException
         {
         }
     }
+
+    public class CannotDeleteQuestionException : AskifyException
+    {
+        public CannotDeleteQuestionException() : base("Cannot delete the question.")
+        {
+        }
+    }
 }

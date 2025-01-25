@@ -8,7 +8,7 @@ public class Question
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public string Title { get; set; }
-    public string Content { get; set; }
+    public string Content { get; set; } = string.Empty;
     public Tag Tag { get; set; }
     public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
     public Guid UserId { get; set; }

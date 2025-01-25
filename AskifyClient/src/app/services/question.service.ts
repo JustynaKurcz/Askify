@@ -108,4 +108,12 @@ export class QuestionService {
   getQuestion(questionId: string) : Observable<Question> {
     return this.http.get<Question>(`${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}`);
   }
+
+  updateQuestion(questionId: string, editQuestionData: {title: string; content: string; tag: number}) : Observable<any> {
+    return this.http.put<any>(`${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}`, editQuestionData);
+  }
+
+  deleteQuestion(questionId: string): Observable<any> {
+    return this.http.delete<any>(`${API_CONSTANTS.QUESTION.BASE_PATH}/${questionId}`);
+  }
 }

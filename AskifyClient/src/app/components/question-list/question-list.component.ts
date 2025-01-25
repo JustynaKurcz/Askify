@@ -1,22 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
-import { TableModule } from 'primeng/table';
-import { MessageService } from 'primeng/api';
-import { Question, QuestionService } from '../../services/question.service';
-import { MenuModule } from 'primeng/menu';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { DividerModule } from 'primeng/divider';
-import { TagModule } from 'primeng/tag';
-import { SkeletonModule } from 'primeng/skeleton';
-import { DatePipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
-import { QuestionDetailsComponent } from '../question-details/question-details.component';
-import { AuthService } from '../../services/auth.service';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { CreateQuestionComponent } from '../create-question/create-question.component';
-import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
-import { PaginatorModule } from 'primeng/paginator';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {DialogModule} from 'primeng/dialog';
+import {TableModule} from 'primeng/table';
+import {MessageService} from 'primeng/api';
+import {Question, QuestionService} from '../../services/question.service';
+import {MenuModule} from 'primeng/menu';
+import {CardModule} from 'primeng/card';
+import {InputTextModule} from 'primeng/inputtext';
+import {DividerModule} from 'primeng/divider';
+import {TagModule} from 'primeng/tag';
+import {SkeletonModule} from 'primeng/skeleton';
+import {DatePipe, NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
+import {QuestionDetailsComponent} from '../question-details/question-details.component';
+import {AuthService} from '../../services/auth.service';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {CreateQuestionComponent} from '../create-question/create-question.component';
+import {debounceTime, distinctUntilChanged, Subject, Subscription} from 'rxjs';
+import {PaginatorModule} from 'primeng/paginator';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 interface PaginationParams {
   pageNumber: number;
@@ -49,12 +49,16 @@ interface PaginationParams {
   styleUrl: './question-list.component.css'
 })
 export class QuestionListComponent implements OnInit, OnDestroy {
+  private readonly questionsService = inject(QuestionService)
+  private readonly messageService = inject(MessageService)
+  private readonly authService = inject(AuthService)
+  private readonly dialogService = inject(DialogService);
   private readonly searchSubject = new Subject<string>();
   private searchSubscription?: Subscription;
   private readonly defaultPageSize = 10;
 
   ref?: DynamicDialogRef;
-  questionId : string = '';
+  questionId: string = '';
   displayDialog = false;
   loading = true;
   isLoggedIn = false;
@@ -64,18 +68,13 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   pageSize = this.defaultPageSize;
   pageSizeOptions = [5, 10, 15];
   searchValue = '';
-
-  constructor(
-    private readonly questionsService: QuestionService,
-    private readonly messageService: MessageService,
-    private readonly authService: AuthService,
-    private readonly dialogService: DialogService
-  ) {
-    this.initializeSearchSubscription();
-  }
+  isAdmin = false;
 
   async ngOnInit(): Promise<void> {
     this.isLoggedIn = this.authService.isLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
+
+    this.initializeSearchSubscription()
     await this.loadQuestions();
   }
 
@@ -101,7 +100,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       const params: PaginationParams = {
         pageNumber: this.currentPage,
         pageSize: this.pageSize,
-        ...(this.searchValue && { search: this.searchValue })
+        ...(this.searchValue && {search: this.searchValue})
       };
 
       const response = await this.questionsService.getQuestions(params).toPromise();
@@ -145,7 +144,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
     this.ref = this.dialogService.open(CreateQuestionComponent, {
       header: 'Dodaj nowe pytanie',
       width: '600px',
-      contentStyle: { overflow: 'auto' },
+      contentStyle: {overflow: 'auto'},
       styleClass: 'question-dialog'
     });
 
@@ -153,6 +152,24 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       if (question) {
         void this.loadQuestions();
       }
+    });
+  }
+
+  deleteQuestion(questionId: string) {
+    this.questionsService.deleteQuestion(questionId).subscribe(() => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Sukces',
+        detail: 'Pytanie zostało usunięte'
+      });
+      this.loadQuestions();
+    }, (error) => {
+      console.error('Error deleting question:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Błąd',
+        detail: 'Nie udało się usunąć pytania'
+      });
     });
   }
 }
