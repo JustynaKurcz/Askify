@@ -13,7 +13,6 @@ internal sealed class GetAnswersForQuestionQueryHandler(
         var answers = await answerRepository.GetAnswerForQuestion(query.QuestionId, cancellationToken);
 
         return await answers
-            .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.AsDto())
             .ToListAsync(cancellationToken);
     }
