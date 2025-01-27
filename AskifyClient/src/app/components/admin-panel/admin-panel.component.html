@@ -7,8 +7,12 @@
       [rows]="pageSize"
       [totalRecords]="totalRecords"
       [loading]="loading"
-      (onPage)="loadUsers($event)"
+      [first]="first"
+      (onLazyLoad)="onPageChange($event)"
+      [rowsPerPageOptions]="pageSizeOptions"
       [rowHover]="true"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Wyświetlono {first} do {last} z {totalRecords} wpisów"
       styleClass="p-datatable-gridlines"
       [tableStyle]="{ 'min-width': '50rem' }"
     >

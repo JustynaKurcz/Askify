@@ -1,12 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {CardModule} from 'primeng/card';
-import {TableModule} from 'primeng/table';
-import {TagModule} from 'primeng/tag';
-import {ToastModule} from 'primeng/toast';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {AuthService, PaginationUser, User} from '../../services/auth.service';
-import {ConfirmationService, MessageService} from 'primeng/api';
-import {DatePipe} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PaginatorModule } from 'primeng/paginator';
+import { FormsModule } from '@angular/forms';
+import { AuthService, User } from '../../services/auth.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
+
+interface PaginationParams {
+  pageNumber: number;
+  pageSize: number;
+}
 
 @Component({
   selector: 'app-admin-panel',
@@ -17,17 +24,21 @@ import {DatePipe} from '@angular/common';
     TagModule,
     ToastModule,
     ConfirmDialogModule,
+    PaginatorModule,
+    FormsModule,
     DatePipe
   ],
-  providers: [AuthService, ConfirmationService],
+  providers: [AuthService, ConfirmationService, MessageService],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css'
 })
-export class AdminPanelComponent  implements OnInit {
+export class AdminPanelComponent implements OnInit {
   users: User[] = [];
   loading = false;
   totalRecords = 0;
+  first = 0;
   pageSize = 10;
+  pageSizeOptions = [5, 10, 15, 20];
 
   constructor(
     private authService: AuthService,
@@ -36,30 +47,42 @@ export class AdminPanelComponent  implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadUsers({ first: 0, rows: this.pageSize });
+    this.loadUsers();
   }
 
-  loadUsers(event: any) {
-    this.loading = true;
-    const pageNumber = event.first / event.rows;
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.pageSize = event.rows;
+    this.loadUsers();
+  }
 
-    this.authService.getUsers({
-      pageNumber: pageNumber,
-      pageSize: event.rows
-    }).subscribe({
-      next: (response: PaginationUser) => {
+  async loadUsers() {
+    try {
+      this.loading = true;
+      const pageNumber = Math.floor(this.first / this.pageSize) + 1;
+
+      const response = await this.authService.getUsers({
+        pageNumber: pageNumber,
+        pageSize: this.pageSize
+      }).toPromise();
+
+      if (response) {
         this.users = response.items;
         this.totalRecords = response.totalItems;
-        this.loading = false;
-      },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Błąd',
-          detail: 'Nie udało się załadować listy użytkowników'
-        });
-        this.loading = false;
       }
+    } catch (error) {
+      this.handleError(error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private handleError(error: unknown): void {
+    console.error('Error loading users:', error);
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Błąd',
+      detail: 'Nie udało się załadować użytkowników'
     });
   }
 
@@ -93,7 +116,7 @@ export class AdminPanelComponent  implements OnInit {
           summary: 'Sukces',
           detail: 'Użytkownik został usunięty'
         });
-        this.loadUsers({ first: 0, rows: this.pageSize });
+        this.loadUsers();
       },
       error: () => {
         this.messageService.add({
