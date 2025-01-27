@@ -52,7 +52,7 @@ export class SignInComponent implements OnInit{
       this.authService.signIn(this.signInForm.value)
         .subscribe({
           next: () => {
-            this.router.navigate(['/strona-glowna']);
+            window.location.href = '/strona-glowna';
             this.loading = false
           },
           error: () => {
