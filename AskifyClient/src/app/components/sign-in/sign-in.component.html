@@ -41,15 +41,16 @@
             <p-button
               label="Zaloguj"
               type="submit"
-              [disabled]="signInForm.invalid"
+              [loading]="loading"
+              [disabled]="signInForm.invalid || loading"
             ></p-button>
           </div>
 
         </div>
       </form>
-          <span>
-            Jesteś tutaj nowy?&nbsp;<a [routerLink]="['/zarejestruj-sie']">Zarejestruj się</a>
-          </span>
+      <span>
+        Jesteś tutaj nowy?&nbsp;<a [routerLink]="['/zarejestruj-sie']">Zarejestruj się</a>
+      </span>
     </p-card>
   </div>
   <div class="image-side">

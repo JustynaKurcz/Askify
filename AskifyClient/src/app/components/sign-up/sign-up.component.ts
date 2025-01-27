@@ -35,6 +35,7 @@ export class SignUpComponent implements OnInit{
   private readonly router = inject(Router);
 
   signUpForm!: FormGroup;
+  loading = false;
 
   ngOnInit() : void {
     this.initializeForm();
@@ -50,11 +51,16 @@ export class SignUpComponent implements OnInit{
 
   onSubmit() {
     if (this.signUpForm.valid) {
+      this.loading = true;
       this.authService.signUp(this.signUpForm.value)
         .subscribe({
-          next: () => this.router.navigate(['/zaloguj-sie']),
+          next: () => {
+            this.router.navigate(['/zaloguj-sie'])
+            this.loading = false
+          },
           error: () => {
             this.toastService.showWarning('Wystąpił błąd podczas rejestracji');
+            this.loading = false;
           }
         });
     }

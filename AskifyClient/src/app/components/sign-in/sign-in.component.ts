@@ -33,6 +33,7 @@ export class SignInComponent implements OnInit{
   private readonly router = inject(Router);
 
   signInForm!: FormGroup;
+  loading = false;
 
   ngOnInit() : void {
     this.initializeForm();
@@ -45,14 +46,18 @@ export class SignInComponent implements OnInit{
     });
   }
 
-
   onSubmit() {
     if (this.signInForm.valid) {
+      this.loading = true;
       this.authService.signIn(this.signInForm.value)
         .subscribe({
-          next: () =>  window.location.href = '/strona-glowna',
+          next: () => {
+            this.router.navigate(['/strona-glowna']);
+            this.loading = false
+          },
           error: () => {
-           this.toastService.showWarning('Błędne dane logowania');
+            this.toastService.showWarning('Błędne dane logowania');
+            this.loading = false
           }
         });
     }
