@@ -6,7 +6,6 @@ import {MenuModule} from 'primeng/menu';
 import {InputTextModule} from 'primeng/inputtext';
 import {MenuItem} from 'primeng/api';
 import {AuthService} from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +24,6 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
-  private router = inject(Router);
 
   userMenuItems: MenuItem[] | undefined;
   menuItems: MenuItem[] | undefined;
