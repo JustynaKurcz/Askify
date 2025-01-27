@@ -2,6 +2,46 @@
   padding: 2rem;
 }
 
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8b5cf6;
+  font-size: 18px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  border: 2px solid #e9d5ff;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-input:hover {
+  border-color: #c084fc;
+}
+
+.search-input:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+  outline: none;
+}
+
 :host ::ng-deep .p-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -33,4 +73,17 @@
 :host ::ng-deep .p-tag {
   min-width: 80px;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  :host ::ng-deep .search-container {
+    .p-input-icon-left {
+      max-width: 100%;
+
+      > input {
+        font-size: 0.875rem;
+        padding: 0.625rem 0.625rem 0.625rem 2.25rem;
+      }
+    }
+  }
 }

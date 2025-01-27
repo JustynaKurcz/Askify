@@ -1,5 +1,18 @@
 <div class="admin-panel">
   <p-card header="Panel administracyjny" subheader="Zarządzanie użytkownikami" styleClass="mb-4">
+
+    <div class="search-container">
+      <div class="search-wrapper">
+        <i class="pi pi-search search-icon"></i>
+        <input
+          type="text"
+          (input)="onSearch($event)"
+          placeholder="Wyszukaj użytkownika po nazwie lub emailu..."
+          class="search-input"
+        />
+      </div>
+    </div>
+
     <p-table
       [value]="users"
       [lazy]="true"
@@ -28,14 +41,14 @@
 
       <ng-template pTemplate="body" let-user>
         <tr>
-          <td>{{user.userName}}</td>
-          <td>{{user.email}}</td>
+          <td>{{ user.userName }}</td>
+          <td>{{ user.email }}</td>
           <td>
             <p-tag [severity]="getRoleSeverity(user.role)">
-              {{user.role}}
+              {{ user.role }}
             </p-tag>
           </td>
-          <td>{{user.createdAt | date:'dd/MM/yyyy HH:mm'}}</td>
+          <td>{{ user.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
           <td>
             <button
               pButton

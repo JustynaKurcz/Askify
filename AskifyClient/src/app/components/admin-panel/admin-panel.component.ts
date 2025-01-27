@@ -9,10 +9,14 @@ import { FormsModule } from '@angular/forms';
 import { AuthService, User } from '../../services/auth.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
+import {debounceTime, distinctUntilChanged, Subject, Subscription} from 'rxjs';
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
+import {InputTextModule} from 'primeng/inputtext';
 
 interface PaginationParams {
   pageNumber: number;
   pageSize: number;
+  search?: string;
 }
 
 @Component({
@@ -26,19 +30,26 @@ interface PaginationParams {
     ConfirmDialogModule,
     PaginatorModule,
     FormsModule,
-    DatePipe
+    DatePipe,
+    InputTextModule
   ],
   providers: [AuthService, ConfirmationService, MessageService],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css'
 })
 export class AdminPanelComponent implements OnInit {
+  private readonly searchSubject = new Subject<string>();
+  private searchSubscription?: Subscription;
+
+  ref?: DynamicDialogRef;
   users: User[] = [];
   loading = false;
   totalRecords = 0;
+  currentPage = 1;
   first = 0;
   pageSize = 10;
   pageSizeOptions = [5, 10, 15, 20];
+  searchValue = '';
 
   constructor(
     private authService: AuthService,
@@ -46,26 +57,44 @@ export class AdminPanelComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {}
 
-  ngOnInit() {
-    this.loadUsers();
+  async ngOnInit(): Promise<void> {
+    this.initializeSearchSubscription()
+    await this.loadUsers();
   }
 
-  onPageChange(event: any) {
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
+    this.ref?.close();
+  }
+
+  private initializeSearchSubscription(): void {
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(async (value) => {
+      this.searchValue = value;
+      this.currentPage = 1;
+      await this.loadUsers();
+    });
+  }
+
+  async onPageChange(event: any): Promise<void> {
     this.first = event.first;
     this.pageSize = event.rows;
-    this.loadUsers();
+    await this.loadUsers();
   }
 
-  async loadUsers() {
+  private async loadUsers(): Promise<void> {
     try {
       this.loading = true;
-      const pageNumber = Math.floor(this.first / this.pageSize) + 1;
+      const params: PaginationParams = {
+        pageNumber: this.currentPage,
+        pageSize: this.pageSize,
+        ...(this.searchValue && {search: this.searchValue})
+      };
 
-      const response = await this.authService.getUsers({
-        pageNumber: pageNumber,
-        pageSize: this.pageSize
-      }).toPromise();
-
+      const response = await this.authService.getUsers(params).toPromise();
       if (response) {
         this.users = response.items;
         this.totalRecords = response.totalItems;
@@ -84,6 +113,11 @@ export class AdminPanelComponent implements OnInit {
       summary: 'Błąd',
       detail: 'Nie udało się załadować użytkowników'
     });
+  }
+
+  onSearch(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.searchSubject.next(target.value);
   }
 
   getRoleSeverity(role: string): 'success' | 'info' | 'warning' | 'danger' | 'secondary' | 'contrast' {
