@@ -101,6 +101,7 @@
   <p-paginator
     [rows]="pageSize"
     [totalRecords]="totalRecords"
+    [first]="(currentPage - 1) * pageSize"
     [rowsPerPageOptions]="pageSizeOptions"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Pokazano {first} do {last} z {totalRecords} pytań"
@@ -111,13 +112,10 @@
 <ng-template #modalTemplate>
   <div class="modal" *ngIf="displayDialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h2>Szczegóły pytania</h2>
-        <div class="modal-actions">
-          <button class="close-btn" (click)="displayDialog = false">
-            <i class="pi pi-times"></i>
-          </button>
-        </div>
+      <div class="modal-actions">
+        <button class="close-button" (click)="displayDialog = false">
+          <i class="pi pi-times"></i>
+        </button>
       </div>
       <div class="modal-body">
         <app-question-details [questionId]="questionId"></app-question-details>

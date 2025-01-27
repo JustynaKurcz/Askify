@@ -125,7 +125,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   }
 
   async onPageChange(event: any): Promise<void> {
-    this.currentPage = Math.floor(event.first / event.rows) + 1;
+    this.currentPage = event.page + 1;
     this.pageSize = event.rows;
     await this.loadQuestions();
   }
