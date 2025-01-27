@@ -79,13 +79,7 @@ export class NavbarComponent implements OnInit {
         {
           label: 'Wyloguj się',
           icon: 'pi pi-sign-out',
-          command: () => {
-            this.authService.signOut().then(() => {
-              this.updateUserMenuItems(false);
-              this.cdr.detectChanges();
-              this.router.navigate(['/strona-glowna']);
-            })
-          }
+          command: () => this.logout()
         }
       ];
     } else {
@@ -102,5 +96,9 @@ export class NavbarComponent implements OnInit {
         }
       ];
     }
+  }
+
+  async logout() {
+    await this.authService.signOut().then(() => window.location.reload());
   }
 }
